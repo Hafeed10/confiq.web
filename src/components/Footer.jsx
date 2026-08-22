@@ -12,13 +12,13 @@ export default function Footer({ onOpenBrochure, scrollToSection }) {
 
           {/* Left Column matching user logo */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center space-x-2.5">
+            <div className="flex items-center space-x-2 sm:space-x-2.5">
               <img 
                 src={confiqLogo} 
                 alt="CONFIQ Logo" 
-                className="h-9 sm:h-11 w-auto object-contain select-none"
+                className="h-6 sm:h-7 md:h-8 w-auto object-contain select-none drop-shadow-xs"
               />
-              <span className="inline-block px-2.5 py-1 rounded-xl text-[11px] font-black bg-[#17472B] text-white uppercase tracking-wider">
+              <span className="inline-block px-2 py-0.5 rounded-lg text-[8px] sm:text-[9px] font-black bg-[#17472B] text-white uppercase tracking-wider shadow-xs">
                 1ST EDITION
               </span>
             </div>
