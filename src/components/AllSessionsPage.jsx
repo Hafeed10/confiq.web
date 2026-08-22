@@ -217,20 +217,19 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
             </button>
           </div>
         ) : (
-          /* 3-Column Responsive Card Grid matching wireframe sketch */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {filteredSessions.map((session) => {
               const tags = Array.isArray(session.tags) ? session.tags : [session.tags];
               return (
                 <div
                   key={session.id}
-                  className="bg-white rounded-3xl border-2 border-[#D5E0D2] shadow-sm hover:shadow-md transition-all p-5 sm:p-6 flex flex-col justify-between group hover:-translate-y-1 relative"
+                  className="bg-white rounded-3xl border-2 border-[#D5E0D2] shadow-sm hover:shadow-md transition-all p-5 sm:p-6 flex flex-col justify-between group"
                 >
                   <div>
-                    {/* Top Row: Left Rounded Photo Frame + Right Speaker Details (matching wireframe) */}
-                    <div className="flex items-start gap-4">
-                      {/* Left: Rounded Square Photo Frame */}
-                      <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl sm:rounded-3xl overflow-hidden bg-[#F0F5EC] border-2 border-[#17472B]/20 shadow-sm shrink-0">
+                    {/* Top Section: Rounded Square Avatar (Left) & 4 Lines of Details (Right) */}
+                    <div className="flex items-start gap-4 mb-4">
+                      {/* Rounded Square Avatar */}
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-[#F0F5EC] border-2 border-[#17472B]/20 shrink-0 shadow-sm">
                         <img
                           src={session.photo}
                           alt={session.speakerName}
@@ -241,58 +240,55 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                         />
                       </div>
 
-                      {/* Right: Speaker Name, Role, Affiliation & Tags */}
+                      {/* Right Details: 4 Lines */}
                       <div className="min-w-0 flex-1 space-y-1">
+                        {/* Line 1: Speaker Name & Flag */}
                         <div className="flex items-center gap-1.5">
                           <h3 className="font-sans text-base sm:text-lg font-black text-[#123C2C] truncate">
                             {session.speakerName}
                           </h3>
-                          <span className="text-base shrink-0">{session.flag}</span>
+                          <span className="text-sm shrink-0">{session.flag}</span>
                         </div>
 
+                        {/* Line 2: Role */}
                         <p className="text-xs font-bold text-gray-700 truncate">
                           {session.role}
                         </p>
 
+                        {/* Line 3: Institution / Affiliation */}
                         {session.affiliation && (
                           <p className="text-[11px] font-semibold text-emerald-800 truncate">
                             {session.affiliation}
                           </p>
                         )}
 
-                        {/* Helping With / Topic Tags */}
-                        <div className="pt-1.5 flex flex-wrap gap-1">
+                        {/* Line 4: Tags / Topics Pills */}
+                        <div className="flex flex-wrap gap-1 pt-1">
                           {tags.slice(0, 3).map((t, idx) => (
                             <span
                               key={idx}
-                              className="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-extrabold bg-[#EEF3EA] text-[#17472B] border border-[#C5DF9F]"
+                              className="px-2 py-0.5 rounded-md text-[9px] font-extrabold bg-[#EEF3EA] text-[#17472B] border border-[#C5DF9F]"
                             >
                               #{t}
                             </span>
                           ))}
-                          {tags.length > 3 && (
-                            <span className="px-1.5 py-0.5 rounded-md text-[9px] font-bold text-gray-500 bg-gray-100">
-                              +{tags.length - 3}
-                            </span>
-                          )}
                         </div>
                       </div>
                     </div>
 
-                    {/* Horizontal Divider Line (matching wireframe) */}
-                    <div className="w-full h-0.5 bg-[#D5E0D2] my-4 rounded-full"></div>
+                    {/* Horizontal Divider Line matching sketch */}
+                    <div className="border-t-2 border-gray-200 my-4"></div>
 
-                    {/* Middle Section: Dropdown Accordion Boxes (matching wireframe) */}
+                    {/* 2 Dropdown Boxes matching sketch */}
                     <div className="space-y-3">
-                      
                       {/* 1st Dropdown Box: Speaker Role & Details */}
                       <div
                         onClick={() => toggleDesignation(session.id)}
-                        className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-xl p-2.5 sm:p-3 transition-all cursor-pointer select-none shadow-xs group/item"
+                        className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-xl p-3 transition-all cursor-pointer select-none shadow-xs"
                       >
                         <div className="flex items-center justify-between gap-2">
                           <div className="min-w-0 flex-1">
-                            <span className="text-[9px] font-black uppercase tracking-wider text-gray-500 block">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block">
                               Speaker Designation
                             </span>
                             <p className={`text-xs font-bold text-[#123C2C] ${expandedDesignations[session.id] ? '' : 'truncate'}`}>
@@ -304,14 +300,9 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                           </div>
                         </div>
 
-                        {expandedDesignations[session.id] && (
-                          <div className="mt-2.5 pt-2.5 border-t border-gray-200 text-xs text-gray-600 space-y-1 animate-fadeIn">
-                            {session.affiliation && (
-                              <p className="font-semibold text-emerald-800">{session.affiliation}</p>
-                            )}
-                            {session.bio && (
-                              <p className="text-[11px] leading-relaxed text-gray-700">{session.bio}</p>
-                            )}
+                        {expandedDesignations[session.id] && session.bio && (
+                          <div className="mt-2 pt-2 border-t border-gray-200 text-xs text-gray-700 leading-relaxed animate-fadeIn">
+                            {session.bio}
                           </div>
                         )}
                       </div>
@@ -320,11 +311,11 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                       {session.abstract && (
                         <div
                           onClick={() => toggleAbstract(session.id)}
-                          className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-xl p-2.5 sm:p-3 transition-all cursor-pointer select-none shadow-xs group/item"
+                          className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-xl p-3 transition-all cursor-pointer select-none shadow-xs"
                         >
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 flex-1">
-                              <span className="text-[9px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
+                              <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
                                 Session Abstract & Key Takeaways
                               </span>
                               <p className={`text-xs text-gray-700 leading-relaxed font-medium transition-all ${
@@ -339,15 +330,14 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                           </div>
                         </div>
                       )}
-
                     </div>
                   </div>
 
-                  {/* Bottom-Right: Pill Action Button (matching wireframe) */}
+                  {/* Bottom-Right Pill Action Button matching sketch */}
                   <div className="pt-4 flex justify-end">
                     <button
                       onClick={() => setSelectedBioSpeaker(session)}
-                      className="bg-[#17472B] hover:bg-[#20603B] text-white px-5 py-2 rounded-xl font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                      className="bg-[#17472B] hover:bg-[#20603B] text-white px-5 py-2 rounded-xl font-bold text-xs shadow-sm hover:shadow transition-all flex items-center gap-1.5 cursor-pointer"
                     >
                       <BookOpen className="w-3.5 h-3.5 text-white" />
                       <span>About</span>
