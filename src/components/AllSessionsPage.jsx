@@ -217,153 +217,141 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
             </button>
           </div>
         ) : (
-          <div className="space-y-6 sm:space-y-8">
+          /* 3-Column Responsive Card Grid matching wireframe sketch */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredSessions.map((session) => {
               const tags = Array.isArray(session.tags) ? session.tags : [session.tags];
               return (
                 <div
                   key={session.id}
-                  className="bg-white rounded-3xl border-2 border-[#D5E0D2] shadow-sm hover:shadow-md transition-all p-5 sm:p-8 relative overflow-hidden group"
+                  className="bg-white rounded-3xl border-2 border-[#D5E0D2] shadow-sm hover:shadow-md transition-all p-5 sm:p-6 flex flex-col justify-between group hover:-translate-y-1 relative"
                 >
-                  {/* Top-Left Speech Bubble / Badge Icon (matching wireframe) */}
-                  <div className="absolute top-0 left-0 bg-[#17472B] text-white px-3 py-1.5 rounded-br-2xl flex items-center gap-1.5 shadow-sm z-10">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                    <span className="text-[10px] font-black uppercase tracking-wider">Keynote Session</span>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center pt-2">
-                    
-                    {/* Left Column: Large Circular Avatar Frame & Speaker Name (matching wireframe) */}
-                    <div className="lg:col-span-4 flex flex-col items-center justify-center text-center">
-                      <div className="w-32 h-32 sm:w-44 sm:h-44 rounded-full overflow-hidden bg-[#F0F5EC] border-4 border-[#17472B]/30 shadow-md p-1 group-hover:border-[#17472B] transition-all shrink-0">
+                  <div>
+                    {/* Top Row: Left Rounded Photo Frame + Right Speaker Details (matching wireframe) */}
+                    <div className="flex items-start gap-4">
+                      {/* Left: Rounded Square Photo Frame */}
+                      <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl sm:rounded-3xl overflow-hidden bg-[#F0F5EC] border-2 border-[#17472B]/20 shadow-sm shrink-0">
                         <img
                           src={session.photo}
                           alt={session.speakerName}
-                          className="w-full h-full object-cover rounded-full"
+                          className="w-full h-full object-cover"
                           onError={(e) => {
                             e.target.src = '/zack_wilson.jpg';
                           }}
                         />
                       </div>
 
-                      {/* Speaker Name with underline indicator */}
-                      <div className="mt-3.5">
-                        <div className="flex items-center justify-center gap-1.5">
-                          <h3 className="font-sans text-lg sm:text-xl font-black text-[#123C2C]">
+                      {/* Right: Speaker Name, Role, Affiliation & Tags */}
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <h3 className="font-sans text-base sm:text-lg font-black text-[#123C2C] truncate">
                             {session.speakerName}
                           </h3>
-                          <span className="text-base sm:text-lg">{session.flag}</span>
+                          <span className="text-base shrink-0">{session.flag}</span>
                         </div>
-                        <div className="w-16 h-1 bg-[#17472B] rounded-full mx-auto mt-1.5"></div>
+
+                        <p className="text-xs font-bold text-gray-700 truncate">
+                          {session.role}
+                        </p>
+
+                        {session.affiliation && (
+                          <p className="text-[11px] font-semibold text-emerald-800 truncate">
+                            {session.affiliation}
+                          </p>
+                        )}
+
+                        {/* Helping With / Topic Tags */}
+                        <div className="pt-1.5 flex flex-wrap gap-1">
+                          {tags.slice(0, 3).map((t, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-extrabold bg-[#EEF3EA] text-[#17472B] border border-[#C5DF9F]"
+                            >
+                              #{t}
+                            </span>
+                          ))}
+                          {tags.length > 3 && (
+                            <span className="px-1.5 py-0.5 rounded-md text-[9px] font-bold text-gray-500 bg-gray-100">
+                              +{tags.length - 3}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Right Column: Tags, Role Bar, Abstract Bar & Action Button (matching wireframe) */}
-                    <div className="lg:col-span-8 space-y-3.5 min-w-0">
-                      
-                      {/* 1st Row: Topic Tag Pills (matching wireframe) */}
-                      <div className="flex flex-wrap items-center gap-2">
-                        {tags.map((t, idx) => (
-                          <span
-                            key={idx}
-                            className="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-[#EEF3EA] text-[#17472B] border border-[#C5DF9F] shadow-xs"
-                          >
-                            #{t}
-                          </span>
-                        ))}
-                      </div>
+                    {/* Horizontal Divider Line (matching wireframe) */}
+                    <div className="w-full h-0.5 bg-[#D5E0D2] my-4 rounded-full"></div>
 
-                      {/* 2nd Row: Speaker Role & Affiliation Dropdown Box */}
-                      <div 
+                    {/* Middle Section: Dropdown Accordion Boxes (matching wireframe) */}
+                    <div className="space-y-3">
+                      
+                      {/* 1st Dropdown Box: Speaker Role & Details */}
+                      <div
                         onClick={() => toggleDesignation(session.id)}
-                        className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-2xl p-3.5 sm:p-4 transition-all cursor-pointer select-none shadow-xs group/item"
+                        className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-xl p-2.5 sm:p-3 transition-all cursor-pointer select-none shadow-xs group/item"
                       >
-                        <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center justify-between gap-2">
                           <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
-                                Speaker Designation & Institution
-                              </span>
-                              <span className="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">
-                                {expandedDesignations[session.id] ? 'Hide' : 'Expand'}
-                              </span>
-                            </div>
-                            <p className={`text-xs sm:text-sm font-bold text-[#123C2C] ${expandedDesignations[session.id] ? '' : 'truncate'}`}>
+                            <span className="text-[9px] font-black uppercase tracking-wider text-gray-500 block">
+                              Speaker Designation
+                            </span>
+                            <p className={`text-xs font-bold text-[#123C2C] ${expandedDesignations[session.id] ? '' : 'truncate'}`}>
                               {session.role}
                             </p>
-                            {session.affiliation && (
-                              <p className={`text-[11px] sm:text-xs font-semibold text-emerald-800 mt-0.5 ${expandedDesignations[session.id] ? '' : 'truncate'}`}>
-                                {session.affiliation}
-                              </p>
-                            )}
                           </div>
-                          <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#17472B] shrink-0 shadow-xs group-hover/item:border-[#17472B] transition-colors">
-                            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expandedDesignations[session.id] ? 'rotate-180 text-emerald-700' : ''}`} />
+                          <div className="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#17472B] shrink-0 shadow-xs">
+                            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedDesignations[session.id] ? 'rotate-180 text-emerald-700' : ''}`} />
                           </div>
                         </div>
 
-                        {/* Expanded details when open */}
-                        {expandedDesignations[session.id] && session.bio && (
-                          <div className="mt-3 pt-3 border-t border-gray-200/80 animate-fadeIn">
-                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
-                              Brief Profile:
-                            </span>
-                            <p className="text-xs text-gray-700 leading-relaxed">
-                              {session.bio}
-                            </p>
+                        {expandedDesignations[session.id] && (
+                          <div className="mt-2.5 pt-2.5 border-t border-gray-200 text-xs text-gray-600 space-y-1 animate-fadeIn">
+                            {session.affiliation && (
+                              <p className="font-semibold text-emerald-800">{session.affiliation}</p>
+                            )}
+                            {session.bio && (
+                              <p className="text-[11px] leading-relaxed text-gray-700">{session.bio}</p>
+                            )}
                           </div>
                         )}
                       </div>
 
-                      {/* 3rd Row: Session Abstract & Key Takeaways Dropdown Box */}
+                      {/* 2nd Dropdown Box: Session Abstract & Key Takeaways */}
                       {session.abstract && (
-                        <div 
+                        <div
                           onClick={() => toggleAbstract(session.id)}
-                          className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-2xl p-3.5 sm:p-4 transition-all cursor-pointer select-none shadow-xs group/item"
+                          className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-xl p-2.5 sm:p-3 transition-all cursor-pointer select-none shadow-xs group/item"
                         >
-                          <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block">
-                                  Session Abstract & Key Takeaways
-                                </span>
-                                <span className="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">
-                                  {expandedAbstracts[session.id] ? 'Collapse' : 'Dropdown'}
-                                </span>
-                              </div>
-                              <p className={`text-xs sm:text-sm text-gray-700 leading-relaxed font-medium transition-all ${
-                                expandedAbstracts[session.id] ? '' : 'line-clamp-2 sm:line-clamp-3'
+                              <span className="text-[9px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
+                                Session Abstract & Key Takeaways
+                              </span>
+                              <p className={`text-xs text-gray-700 leading-relaxed font-medium transition-all ${
+                                expandedAbstracts[session.id] ? '' : 'line-clamp-2'
                               }`}>
                                 {session.abstract}
                               </p>
                             </div>
-                            <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#17472B] shrink-0 shadow-xs group-hover/item:border-[#17472B] transition-colors mt-0.5">
-                              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expandedAbstracts[session.id] ? 'rotate-180 text-emerald-700' : ''}`} />
+                            <div className="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#17472B] shrink-0 shadow-xs mt-0.5">
+                              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedAbstracts[session.id] ? 'rotate-180 text-emerald-700' : ''}`} />
                             </div>
                           </div>
-
-                          {!expandedAbstracts[session.id] && (
-                            <span className="text-[10px] font-bold text-emerald-800 hover:underline inline-flex items-center gap-1 mt-2">
-                              <span>Click to read full abstract</span>
-                              <ChevronDown className="w-3 h-3" />
-                            </span>
-                          )}
                         </div>
                       )}
 
-                      {/* Bottom-Right: Action Button (matching wireframe) */}
-                      <div className="pt-2 flex justify-end">
-                        <button
-                          onClick={() => setSelectedBioSpeaker(session)}
-                          className="bg-[#17472B] hover:bg-[#20603B] text-white px-6 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
-                        >
-                          <BookOpen className="w-4 h-4 text-white" />
-                          <span>View Full Bio & Abstract</span>
-                        </button>
-                      </div>
-
                     </div>
+                  </div>
 
+                  {/* Bottom-Right: Pill Action Button (matching wireframe) */}
+                  <div className="pt-4 flex justify-end">
+                    <button
+                      onClick={() => setSelectedBioSpeaker(session)}
+                      className="bg-[#17472B] hover:bg-[#20603B] text-white px-5 py-2 rounded-xl font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-white" />
+                      <span>About</span>
+                    </button>
                   </div>
 
                 </div>
