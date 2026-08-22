@@ -9,18 +9,46 @@ import CountdownSection from './components/CountdownSection';
 import BrochureModal from './components/BrochureModal';
 import Footer from './components/Footer';
 import AdminDashboard from './components/AdminDashboard';
+import AllSessionsPage from './components/AllSessionsPage';
 
 import { supabase } from './lib/supabase';
 
 export default function App() {
-  // Check initial URL hash / path for admin access (e.g. #admin or /admin)
-  const [isAdminView, setIsAdminView] = useState(() => {
+  // Check initial URL hash / path for view routing (#admin, #all-sessions, etc.)
+  const [currentView, setCurrentView] = useState(() => {
     const hash = window.location.hash;
     const path = window.location.pathname;
-    return hash === '#admin' || path === '/admin' || window.location.search.includes('admin');
+    if (hash === '#admin' || path === '/admin' || window.location.search.includes('admin')) {
+      return 'admin';
+    }
+    if (hash === '#all-sessions' || hash === '#sessions-page' || path === '/sessions' || window.location.search.includes('sessions')) {
+      return 'sessions';
+    }
+    return 'home';
   });
 
   const [isBrochureOpen, setIsBrochureOpen] = useState(false);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      const path = window.location.pathname;
+      if (hash === '#admin' || path === '/admin' || window.location.search.includes('admin')) {
+        setCurrentView('admin');
+      } else if (hash === '#all-sessions' || hash === '#sessions-page' || path === '/sessions' || window.location.search.includes('sessions')) {
+        setCurrentView('sessions');
+      } else {
+        setCurrentView('home');
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
+    };
+  }, []);
 
   // Initial default sessions
   const defaultSessionsList = [
@@ -178,38 +206,45 @@ export default function App() {
     };
   }, []);
 
-  // Listen for URL changes dynamically
-  useEffect(() => {
-    const handleUrlChange = () => {
-      const hash = window.location.hash;
-      const path = window.location.pathname;
-      const search = window.location.search;
-      setIsAdminView(hash === '#admin' || path === '/admin' || search.includes('admin'));
-    };
-
-    window.addEventListener('hashchange', handleUrlChange);
-    window.addEventListener('popstate', handleUrlChange);
-    return () => {
-      window.removeEventListener('hashchange', handleUrlChange);
-      window.removeEventListener('popstate', handleUrlChange);
-    };
-  }, []);
-
   const scrollToSection = (id) => {
+    // If currently on sessions page, first navigate back to home, then scroll
+    if (currentView !== 'home') {
+      setCurrentView('home');
+      window.location.hash = '';
+      history.pushState("", document.title, window.location.pathname.replace('/sessions', '').replace('/admin', ''));
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+      return;
+    }
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const handleReturnToPublic = () => {
-    window.location.hash = '';
-    history.pushState("", document.title, window.location.pathname.replace('/admin', ''));
-    setIsAdminView(false);
+  const handleExploreAllSessions = () => {
+    setCurrentView('sessions');
+    window.location.hash = '#all-sessions';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Render Admin Dashboard ONLY when accessed via URL (#admin or /admin)
-  if (isAdminView) {
+  const handleBackToHome = () => {
+    setCurrentView('home');
+    window.location.hash = '';
+    history.pushState("", document.title, window.location.pathname.replace('/sessions', '').replace('/admin', ''));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleReturnToPublic = () => {
+    setCurrentView('home');
+    window.location.hash = '';
+    history.pushState("", document.title, window.location.pathname.replace('/admin', ''));
+  };
+
+  // 1. Render Admin Dashboard ONLY when accessed via URL (#admin or /admin)
+  if (currentView === 'admin') {
     return (
       <AdminDashboard
         onReturnToPublic={handleReturnToPublic}
@@ -221,7 +256,24 @@ export default function App() {
     );
   }
 
-  // Render Landing Page
+  // 2. Render Dedicated All Sessions Page when navigated to (#all-sessions or /sessions)
+  if (currentView === 'sessions') {
+    return (
+      <>
+        <AllSessionsPage
+          onBackToHome={handleBackToHome}
+          onOpenBrochure={() => setIsBrochureOpen(true)}
+          sessionsData={sessionsData}
+        />
+        <BrochureModal
+          isOpen={isBrochureOpen}
+          onClose={() => setIsBrochureOpen(false)}
+        />
+      </>
+    );
+  }
+
+  // 3. Render Landing Page
   return (
     <div className="min-h-screen bg-brand-bg text-brand-textDark font-sans selection:bg-brand-dark selection:text-white flex flex-col">
       
@@ -251,6 +303,7 @@ export default function App() {
         {/* 4. Scheduled Sessions Carousel */}
         <ScheduledSessions 
           sessionsData={sessionsData}
+          onExploreAllSessions={handleExploreAllSessions}
         />
 
         {/* 5. Full Width Geometric Cross Pattern Banner */}

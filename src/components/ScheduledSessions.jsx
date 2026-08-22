@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowUpRight, Calendar, X, User, ArrowRight, CheckCircle } from 'lucide-react';
 
-export default function ScheduledSessions({ sessionsData }) {
+export default function ScheduledSessions({ sessionsData, onExploreAllSessions }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bioModalSpeaker, setBioModalSpeaker] = useState(null);
   const [allSessionsModalOpen, setAllSessionsModalOpen] = useState(false);
@@ -23,6 +23,14 @@ export default function ScheduledSessions({ sessionsData }) {
   const sessions = sessionsData && sessionsData.length > 0 ? sessionsData : defaultSessions;
   const currentSession = sessions[currentSlide] || sessions[0];
 
+  const handleExploreClick = () => {
+    if (onExploreAllSessions) {
+      onExploreAllSessions();
+    } else {
+      window.location.hash = '#all-sessions';
+    }
+  };
+
   return (
     <section id="sessions" className="py-12 sm:py-20 bg-[#EEF3EA] border-t border-[#D5E0D2] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,8 +42,8 @@ export default function ScheduledSessions({ sessionsData }) {
           </h2>
 
           <button 
-            onClick={() => setAllSessionsModalOpen(true)}
-            className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#123C2C] hover:underline self-start sm:self-auto group"
+            onClick={handleExploreClick}
+            className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#123C2C] hover:underline self-start sm:self-auto group cursor-pointer"
           >
             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             <span>Explore all Sessions</span>
