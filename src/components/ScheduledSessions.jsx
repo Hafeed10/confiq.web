@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, Calendar, X, User, ArrowRight, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowUpRight, X, Sparkles, BookOpen } from 'lucide-react';
 
 export default function ScheduledSessions({ sessionsData, onExploreAllSessions }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [bioModalSpeaker, setBioModalSpeaker] = useState(null);
-  const [allSessionsModalOpen, setAllSessionsModalOpen] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   const defaultSessions = [
     {
@@ -17,11 +17,44 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
       tags: ['UX/UI design', 'Product design', 'Copywriting'],
       bio: 'Zack Wilson is a Senior Product Designer at Meta with over 12 years of experience designing complex algorithmic interfaces and human-AI interaction patterns.',
       abstract: 'This session explores how user interfaces can transparently signal AI confidence levels, prevent automated fatwa hallucinations, and preserve human scholarly authority in digital legal consultations.'
+    },
+    {
+      id: 'session-2',
+      speakerName: 'Dr. Abdullah Al-Makhdoomi',
+      flag: '🇮🇳',
+      role: 'Professor of Shafi\'i Jurisprudence',
+      affiliation: 'Ahlussuffa Dars Complex & Ponnani Research Chair',
+      photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
+      tags: ['Shafi\'i Fiqh', 'Makhdoomi Legacy', 'Maritime Trade'],
+      bio: 'Dr. Abdullah Al-Makhdoomi is a distinguished scholar of classical Shafi\'ite jurisprudence and author of 14 treatises on Indian Ocean maritime legal history.',
+      abstract: 'An analytical review of how 16th-century Shafi\'i jurists in Malabar resolved novel trade contracts and maritime disputes.'
+    },
+    {
+      id: 'session-3',
+      speakerName: 'Sheikh Ibrahim Al-Kerali',
+      flag: '🇦🇪',
+      role: 'Islamic Finance & Crypto Ethicist',
+      affiliation: 'Advisor to Global Decentralized Finance Protocols',
+      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600',
+      tags: ['DeFi Yields', 'Smart Contracts', 'Crypto Fiqh'],
+      bio: 'Sheikh Ibrahim Al-Kerali is a pioneer in Islamic Fintech and cryptocurrency jurisprudence.',
+      abstract: 'Evaluating liquidity pool staking, automated market makers (AMMs), and algorithmic stablecoins under traditional legal maxims.'
     }
   ];
 
   const sessions = sessionsData && sessionsData.length > 0 ? sessionsData : defaultSessions;
   const currentSession = sessions[currentSlide] || sessions[0];
+
+  // Automatic sliding timer (every 4 seconds)
+  useEffect(() => {
+    if (sessions.length <= 1 || isPaused || bioModalSpeaker) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % sessions.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [sessions.length, isPaused, bioModalSpeaker]);
 
   const handleExploreClick = () => {
     if (onExploreAllSessions) {
@@ -32,11 +65,11 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
   };
 
   return (
-    <section id="sessions" className="py-12 sm:py-20 bg-[#EEF3EA] border-t border-[#D5E0D2] overflow-hidden">
+    <section id="sessions" className="py-14 sm:py-24 bg-[#EBF5DA]/40 border-t border-[#D5E0D2] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Title Row matching PDF */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 sm:mb-8">
+        {/* Title Row */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-10 sm:mb-14">
           <h2 className="font-sans text-2xl sm:text-4xl font-extrabold text-[#123C2C] uppercase tracking-tight">
             SCHEDULED <span className="font-black text-[#123C2C]">SESSIONS</span>
           </h2>
@@ -50,260 +83,190 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
           </button>
         </div>
 
-        {/* Outer Card Dark Green Container matching theme */}
-        <div className="relative">
-          <div className="bg-[#387B52] p-3.5 sm:p-7 rounded-3xl shadow-2xl relative overflow-hidden border border-[#20603B]">
-            
-            {/* Inner White/Off-white Card matching PDF */}
-            <div className="bg-[#F7F9F5] rounded-2xl p-4 sm:p-8 shadow-md grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center overflow-hidden">
+        {/* Layered Cards Deck Container matching Model Screenshot */}
+        <div 
+          className="relative max-w-5xl mx-auto my-4"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          
+          {/* Layer 1: Outermost Left Blue Deck Card */}
+          <div className="absolute inset-y-3 -left-12 -right-12 bg-[#0E6E8E] rounded-[36px] transform scale-95 opacity-90 hidden sm:block shadow-md pointer-events-none" />
+
+          {/* Layer 2: Middle Olive-Green Deck Card */}
+          <div className="absolute inset-y-2 -left-6 -right-6 bg-[#4B6338] rounded-[36px] transform scale-[0.98] opacity-95 hidden sm:block shadow-md pointer-events-none" />
+
+          {/* Layer 3: Right Stacked Card Accents */}
+          <div className="absolute inset-y-2.5 -right-6 w-16 bg-[#2E7D32] rounded-r-[36px] hidden sm:block opacity-90 pointer-events-none" />
+          <div className="absolute inset-y-3.5 -right-12 w-16 bg-[#17472B] rounded-r-[36px] hidden sm:block opacity-90 pointer-events-none" />
+
+          {/* Foreground Main White Card */}
+          <div className="relative bg-white rounded-[32px] sm:rounded-[36px] shadow-2xl border border-gray-100/80 overflow-hidden z-10">
+            <div className="grid grid-cols-1 md:grid-cols-12 items-center">
               
-              {/* Left Oval Speaker Frame matching PDF */}
-              <div className="lg:col-span-5 flex justify-center">
-                <div className="w-48 h-48 sm:w-72 sm:h-72 rounded-3xl overflow-hidden bg-white shadow-md border-4 border-white shrink-0">
-                  <img
-                    src={currentSession.photo}
-                    alt={currentSession.speakerName}
-                    className="w-full h-full object-cover"
-                    onError={(e) => { e.target.src = '/zack_wilson.jpg'; }}
-                  />
-                </div>
+              {/* Left Column: Speaker Portrait with Ambient Aura Background */}
+              <div className="md:col-span-5 h-72 sm:h-80 md:h-[360px] bg-gradient-to-tr from-amber-50/80 via-purple-50/70 to-pink-50/80 flex items-end justify-center relative overflow-hidden">
+                <img
+                  src={currentSession.photo}
+                  alt={currentSession.speakerName}
+                  className="w-full h-full object-cover object-top md:object-cover scale-100 hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    e.target.src = '/zack_wilson.jpg';
+                  }}
+                />
               </div>
 
-              {/* Right Speaker Details matching PDF */}
-              <div className="lg:col-span-7 space-y-4 sm:space-y-5 min-w-0 w-full overflow-hidden">
-                
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 max-w-full">
-                    <h3 className="font-sans text-2xl sm:text-4xl font-black text-[#123C2C] break-words max-w-full">
+              {/* Right Column: Speaker Details & Actions */}
+              <div className="md:col-span-7 p-6 sm:p-10 space-y-4 sm:space-y-5">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-sans text-2xl sm:text-3xl font-black text-[#123C2C]">
                       {currentSession.speakerName}
                     </h3>
                     <span className="text-xl sm:text-2xl shrink-0">{currentSession.flag}</span>
                   </div>
 
-                  <p className="text-xs sm:text-sm font-bold text-gray-600 mt-1 break-words">
+                  <p className="text-xs sm:text-sm font-semibold text-gray-600 mt-1">
                     {currentSession.role}
                   </p>
-                  
-                  {currentSession.affiliation && (
-                    <p className="text-[11px] sm:text-xs font-semibold text-emerald-800 mt-0.5 break-words">
-                      {currentSession.affiliation}
-                    </p>
-                  )}
                 </div>
 
-                {/* "Helping with:" Tags Section matching PDF */}
-                <div className="min-w-0">
-                  <span className="text-[11px] sm:text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">
+                {/* "Helping with:" Tags Section */}
+                <div>
+                  <span className="text-xs font-semibold text-gray-500 block mb-2">
                     Helping with:
                   </span>
                   
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {Array.isArray(currentSession.tags) ? currentSession.tags.map((tag, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold bg-white text-[#123C2C] border border-gray-200 shadow-xs break-words"
+                        className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#F0F2F5] text-gray-800 border border-gray-200 shadow-2xs"
                       >
                         {tag}
                       </span>
                     )) : (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-white text-[#123C2C] border border-gray-200">
+                      <span className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#F0F2F5] text-gray-800 border border-gray-200">
                         {currentSession.tags}
                       </span>
                     )}
                   </div>
                 </div>
 
-                {/* Buttons matching user diagram */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 pt-2 w-full">
+                {/* Horizontal Divider */}
+                <div className="w-full h-px bg-gray-200/90 pt-0 my-2" />
+
+                {/* Action Buttons: [ About ] and [ Book lector ] */}
+                <div className="flex flex-wrap items-center gap-3 pt-1">
                   <button
                     onClick={() => setBioModalSpeaker(currentSession)}
-                    className="w-full sm:w-auto px-6 py-3 rounded-xl border border-gray-400 text-[#123C2C] font-bold text-xs sm:text-sm bg-white hover:bg-gray-50 shadow-xs transition-all text-center"
+                    className="px-8 py-2.5 rounded-2xl border-2 border-gray-900 text-gray-900 font-extrabold text-xs sm:text-sm bg-white hover:bg-gray-50 transition-all cursor-pointer shadow-xs"
                   >
                     About
+                  </button>
+
+                  <button
+                    onClick={() => setBioModalSpeaker(currentSession)}
+                    className="px-8 py-2.5 rounded-2xl bg-[#5B50EE] hover:bg-[#4E43E0] text-white font-extrabold text-xs sm:text-sm transition-all cursor-pointer shadow-md hover:shadow-lg"
+                  >
+                    Book lector
                   </button>
                 </div>
 
               </div>
 
             </div>
-
           </div>
 
-          {/* Carousel Dots matching PDF */}
-          {sessions.length > 1 && (
-            <div className="flex items-center justify-center space-x-2 mt-6">
-              {sessions.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`h-2.5 rounded-full transition-all ${
-                    currentSlide === idx ? 'w-8 bg-[#123C2C]' : 'w-2.5 bg-gray-300'
-                  }`}
-                  aria-label={`Slide ${idx + 1}`}
-                />
-              ))}
-            </div>
-          )}
+        </div>
 
+        {/* Carousel Dots with elongated active indicator matching screenshot */}
+        <div className="flex items-center justify-center space-x-1.5 mt-8 sm:mt-10">
+          {sessions.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentSlide(idx)}
+              className={`h-2 rounded-full transition-all cursor-pointer ${
+                currentSlide === idx 
+                  ? 'w-10 bg-[#123C2C]' 
+                  : 'w-2 bg-gray-300 hover:bg-gray-400'
+              }`}
+              aria-label={`Slide ${idx + 1}`}
+            />
+          ))}
         </div>
 
       </div>
 
       {/* Speaker Bio Modal */}
       {bioModalSpeaker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl relative border border-gray-200 max-h-[90vh] overflow-y-auto no-scrollbar">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative border border-gray-200 max-h-[90vh] overflow-y-auto no-scrollbar">
             <button
               onClick={() => setBioModalSpeaker(null)}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-base flex items-center justify-center transition-colors"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-base flex items-center justify-center transition-colors cursor-pointer"
+              aria-label="Close"
             >
-              ✕
+              <X className="w-4 h-4" />
             </button>
-            <h3 className="text-xl sm:text-2xl font-black text-[#123C2C] mb-1 break-words pr-8">
-              {bioModalSpeaker.speakerName} {bioModalSpeaker.flag}
-            </h3>
-            <p className="text-xs sm:text-sm font-bold text-gray-600 mb-3 break-words">
-              {bioModalSpeaker.role}
-            </p>
+
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-20 h-20 rounded-2xl overflow-hidden bg-[#EEF3EA] shadow border-2 border-[#17472B] shrink-0">
+                <img
+                  src={bioModalSpeaker.photo}
+                  alt={bioModalSpeaker.speakerName}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src = '/zack_wilson.jpg';
+                  }}
+                />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-sans text-xl sm:text-2xl font-black text-[#123C2C]">
+                    {bioModalSpeaker.speakerName}
+                  </h3>
+                  <span className="text-xl">{bioModalSpeaker.flag}</span>
+                </div>
+                <p className="text-xs sm:text-sm font-bold text-gray-600 mt-0.5">
+                  {bioModalSpeaker.role}
+                </p>
+                {bioModalSpeaker.affiliation && (
+                  <p className="text-xs font-semibold text-emerald-800 mt-0.5">
+                    {bioModalSpeaker.affiliation}
+                  </p>
+                )}
+              </div>
+            </div>
+
             {bioModalSpeaker.bio && (
-              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed mb-4 break-words">
-                {bioModalSpeaker.bio}
-              </p>
+              <div className="mb-6">
+                <h4 className="text-xs font-black uppercase tracking-wider text-gray-500 mb-2">
+                  Speaker Biography
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
+                  {bioModalSpeaker.bio}
+                </p>
+              </div>
             )}
+
             {bioModalSpeaker.abstract && (
-              <div className="bg-emerald-50 p-3.5 rounded-xl border border-emerald-200 mb-6">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#123C2C] block mb-1">
+              <div className="bg-[#F4F8F1] p-4 rounded-2xl border border-emerald-200 mb-6">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#123C2C] block mb-1.5">
                   Session Topic Abstract:
                 </span>
-                <p className="text-xs text-gray-800 leading-relaxed font-medium break-words">
+                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
                   {bioModalSpeaker.abstract}
                 </p>
               </div>
             )}
+
             <button
               onClick={() => setBioModalSpeaker(null)}
               className="w-full py-3 bg-[#123C2C] hover:bg-[#1C5842] text-white rounded-xl font-bold text-xs sm:text-sm shadow cursor-pointer transition-colors"
             >
-              Close
+              Close Profile
             </button>
-          </div>
-        </div>
-      )}
-
-      {/* ALL SCHEDULED SESSIONS MODAL PAGE (Opens when clicking Explore All Sessions) */}
-      {allSessionsModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-3 sm:p-6 animate-fadeIn">
-          <div className="bg-[#FAFBF8] rounded-3xl max-w-4xl w-full p-5 sm:p-8 shadow-2xl relative border border-gray-300 max-h-[92vh] overflow-y-auto no-scrollbar">
-            
-            {/* Close Button */}
-            <button
-              onClick={() => setAllSessionsModalOpen(false)}
-              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800 flex items-center justify-center font-bold text-lg transition-colors z-10"
-              aria-label="Close modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            {/* Header Title */}
-            <div className="flex items-center gap-3 mb-6 border-b border-gray-200 pb-4 pr-10">
-              <div className="p-3 bg-[#17472B] text-white rounded-2xl shadow-sm shrink-0">
-                <Calendar className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-sans text-2xl sm:text-3xl font-black text-[#17472B]">
-                  All Scheduled Summit Sessions
-                </h3>
-                <p className="text-xs font-bold text-[#387B52] mt-0.5">
-                  1st Edition • conFiqh 2026 Academic Sessions ({sessions.length} Published)
-                </p>
-              </div>
-            </div>
-
-            {/* Grid of All Sessions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {sessions.map((session, idx) => {
-                const tagsList = Array.isArray(session.tags) ? session.tags : (session.tags ? session.tags.split(',') : []);
-                return (
-                  <div 
-                    key={session.id || idx}
-                    className="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex flex-col justify-between hover:border-emerald-600 transition-all group"
-                  >
-                    <div>
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-14 h-14 rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
-                          <img 
-                            src={session.photo} 
-                            alt={session.speakerName}
-                            className="w-full h-full object-cover"
-                            onError={(e) => { e.target.src = '/zack_wilson.jpg'; }}
-                          />
-                        </div>
-
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-sans text-lg font-black text-[#17472B] truncate">
-                              {session.speakerName}
-                            </h4>
-                            <span className="text-lg shrink-0">{session.flag}</span>
-                          </div>
-                          <p className="text-xs font-bold text-gray-600 truncate">
-                            {session.role}
-                          </p>
-                          {session.affiliation && (
-                            <p className="text-[11px] font-semibold text-emerald-800 truncate">
-                              {session.affiliation}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Session Abstract */}
-                      {session.abstract && (
-                        <p className="text-xs text-gray-600 leading-relaxed font-medium line-clamp-3 mb-4 bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
-                          {session.abstract}
-                        </p>
-                      )}
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5 mb-5">
-                        {tagsList.map((tag, tagIdx) => (
-                          <span 
-                            key={tagIdx}
-                            className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-gray-100 text-[#17472B] border border-gray-200"
-                          >
-                            #{tag.trim()}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="pt-3 border-t border-gray-100">
-                      <button
-                        onClick={() => {
-                          setAllSessionsModalOpen(false);
-                          setBioModalSpeaker(session);
-                        }}
-                        className="w-full py-2 px-3 rounded-xl border border-gray-300 text-[#17472B] font-bold text-xs hover:bg-gray-50 transition-all text-center cursor-pointer"
-                      >
-                        About Speaker & Abstract
-                      </button>
-                    </div>
-
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="mt-8 pt-4 border-t border-gray-200 flex justify-end">
-              <button
-                onClick={() => setAllSessionsModalOpen(false)}
-                className="bg-[#17472B] hover:bg-[#20603B] text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow"
-              >
-                Close View
-              </button>
-            </div>
-
           </div>
         </div>
       )}

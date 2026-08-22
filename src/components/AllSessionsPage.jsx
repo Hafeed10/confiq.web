@@ -1,11 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Search, Filter, Calendar, MapPin, Download, User, BookOpen, Layers, Clock, X, Sparkles } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Search, 
+  Filter, 
+  Calendar, 
+  MapPin, 
+  Download, 
+  User, 
+  BookOpen, 
+  Layers, 
+  Clock, 
+  X, 
+  Sparkles,
+  ChevronDown,
+  ChevronUp,
+  MessageSquareQuote,
+  Award
+} from 'lucide-react';
 import confiqLogo from '../assets/CONFIQ.png';
 
 export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessionsData }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState('ALL');
   const [selectedBioSpeaker, setSelectedBioSpeaker] = useState(null);
+
+  // Accordion state tracking for individual cards (both collapsed by default on initial view)
+  const [expandedAbstracts, setExpandedAbstracts] = useState({});
+  const [expandedBios, setExpandedBios] = useState({});
+
+  const toggleAbstract = (id) => {
+    setExpandedAbstracts((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const toggleBio = (id) => {
+    setExpandedBios((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   // Scroll to top on mount
   useEffect(() => {
@@ -55,22 +84,19 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
     sessions.flatMap((s) => (Array.isArray(s.tags) ? s.tags : [s.tags])).filter(Boolean)
   )];
 
-  // Filtered sessions
+  // Filtered sessions based on search query
   const filteredSessions = sessions.filter((s) => {
-    const matchesSearch =
-      (s.speakerName && s.speakerName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (s.role && s.role.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (s.affiliation && s.affiliation.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (s.abstract && s.abstract.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      (s.speakerName && s.speakerName.toLowerCase().includes(q)) ||
+      (s.role && s.role.toLowerCase().includes(q)) ||
+      (s.affiliation && s.affiliation.toLowerCase().includes(q)) ||
+      (s.abstract && s.abstract.toLowerCase().includes(q)) ||
       (Array.isArray(s.tags)
-        ? s.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()))
-        : String(s.tags).toLowerCase().includes(searchQuery.toLowerCase()));
-
-    const matchesTag =
-      selectedTag === 'ALL' ||
-      (Array.isArray(s.tags) ? s.tags.includes(selectedTag) : s.tags === selectedTag);
-
-    return matchesSearch && matchesTag;
+        ? s.tags.some((t) => String(t).toLowerCase().includes(q))
+        : String(s.tags).toLowerCase().includes(q))
+    );
   });
 
   return (
@@ -127,8 +153,8 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
             Explore the comprehensive roster of keynote lectures, scholarly research panels, and applied jurisprudence presentations taking place across the two days of conFiqh 2026.
           </p>
 
-          {/* Search & Tag Filtering Bar */}
-          <div className="bg-white p-3 sm:p-4 rounded-2xl border border-[#C5DF9F] shadow-sm space-y-3">
+          {/* Search Bar */}
+          <div className="bg-white p-2 sm:p-2.5 rounded-2xl border border-[#C5DF9F] shadow-sm">
             <div className="relative">
               <Search className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -146,27 +172,6 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                   <X className="w-4 h-4" />
                 </button>
               )}
-            </div>
-
-            {/* Tag Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-1">
-              <span className="text-xs font-bold text-gray-500 flex items-center gap-1 mr-1">
-                <Filter className="w-3.5 h-3.5" />
-                <span>Filter:</span>
-              </span>
-              {allTags.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => setSelectedTag(tag)}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    selectedTag === tag
-                      ? 'bg-[#17472B] text-white shadow-xs'
-                      : 'bg-[#EEF3EA] text-[#123C2C] hover:bg-[#DDF0C2]'
-                  }`}
-                >
-                  {tag === 'ALL' ? 'All Topics' : tag}
-                </button>
-              ))}
             </div>
           </div>
         </div>
@@ -195,92 +200,160 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
               Try adjusting your search terms or selecting "All Topics" to view all available sessions.
             </p>
             <button
-              onClick={() => {
-                setSearchQuery('');
-                setSelectedTag('ALL');
-              }}
+              onClick={() => setSearchQuery('')}
               className="bg-[#17472B] text-white px-5 py-2 rounded-xl text-xs font-bold shadow-xs hover:bg-[#20603B]"
             >
-              Clear Filters
+              Clear Search
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          /* Stacked Wide Card Model layout matching wireframe */
+          <div className="space-y-8 sm:space-y-10">
             {filteredSessions.map((session) => {
-              const tags = Array.isArray(session.tags) ? session.tags : [session.tags];
+              const tags = Array.isArray(session.tags) ? session.tags : (session.tags ? session.tags.split(',') : []);
+              const isAbstractOpen = !!expandedAbstracts[session.id];
+              const isBioOpen = !!expandedBios[session.id];
+
               return (
                 <div
                   key={session.id}
-                  className="bg-white rounded-3xl border border-[#D5E0D2] shadow-sm hover:shadow-md transition-all flex flex-col justify-between overflow-hidden group hover:-translate-y-1"
+                  className="bg-white rounded-3xl border-2 border-[#D5E0D2] hover:border-[#17472B]/60 shadow-sm hover:shadow-xl transition-all relative group"
                 >
-                  <div>
-                    {/* Top Speaker Image & Flag Header */}
-                    <div className="p-6 pb-4 bg-[#F8FAF6] border-b border-gray-100 flex items-center gap-4">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white shadow-sm border-2 border-white shrink-0">
-                        <img
-                          src={session.photo}
-                          alt={session.speakerName}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.src = '/zack_wilson.jpg';
-                          }}
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-sans text-lg sm:text-xl font-black text-[#123C2C] truncate">
+                  {/* Top-left Message / Speech Bubble Floating Badge matching wireframe */}
+                  <div className="absolute -top-3.5 left-6 bg-[#17472B] text-white px-3.5 py-1.5 rounded-2xl rounded-bl-xs flex items-center gap-1.5 z-20 shadow-md border-2 border-[#EBF5DA]">
+                    <MessageSquareQuote className="w-4 h-4 text-emerald-300" />
+                    <span className="text-[10px] font-black uppercase tracking-wider">
+                      Featured Session
+                    </span>
+                  </div>
+
+                  <div className="p-6 sm:p-8 pt-8 sm:pt-9">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+                      
+                      {/* LEFT COLUMN: Large Circular Speaker Avatar & Metadata matching diagram */}
+                      <div className="lg:col-span-4 flex flex-col items-center text-center">
+                        {/* Circular Speaker Avatar */}
+                        <div className="w-32 h-32 sm:w-44 sm:h-44 rounded-full overflow-hidden border-4 border-[#17472B] bg-[#EEF3EA] shadow-md relative shrink-0">
+                          <img
+                            src={session.photo}
+                            alt={session.speakerName}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.src = '/zack_wilson.jpg';
+                            }}
+                          />
+                        </div>
+
+                        {/* Speaker Name with Flag */}
+                        <div className="mt-4 flex items-center justify-center gap-2">
+                          <h3 className="font-sans text-xl sm:text-2xl font-black text-[#123C2C]">
                             {session.speakerName}
                           </h3>
-                          <span className="text-lg shrink-0">{session.flag}</span>
+                          <span className="text-xl shrink-0">{session.flag}</span>
                         </div>
-                        <p className="text-xs font-bold text-gray-600 line-clamp-1 mt-0.5">
+
+                        {/* Role & Affiliation */}
+                        <p className="text-xs sm:text-sm font-bold text-gray-700 mt-1 max-w-xs">
                           {session.role}
                         </p>
+                        
                         {session.affiliation && (
-                          <p className="text-[11px] font-semibold text-emerald-800 line-clamp-1 mt-0.5">
+                          <p className="text-[11px] sm:text-xs font-semibold text-emerald-800 mt-0.5 max-w-xs">
                             {session.affiliation}
                           </p>
                         )}
-                      </div>
-                    </div>
 
-                    {/* Session Abstract & Tags Body */}
-                    <div className="p-6 space-y-4">
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5">
-                        {tags.map((t, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2.5 py-1 rounded-md text-[10px] font-extrabold bg-[#EBF5DA] text-[#17472B] border border-[#C5DF9F]"
-                          >
-                            #{t}
-                          </span>
-                        ))}
+                        {/* Underline accent from sketch */}
+                        <div className="w-20 h-1 bg-[#17472B] rounded-full mt-3 opacity-80" />
                       </div>
 
-                      {/* Abstract */}
-                      {session.abstract && (
-                        <div className="bg-[#F8FAF6] p-3.5 rounded-xl border border-gray-100">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-1">
-                            Session Abstract
-                          </span>
-                          <p className="text-xs text-gray-700 leading-relaxed font-medium line-clamp-4">
-                            {session.abstract}
-                          </p>
+                      {/* RIGHT COLUMN: Tags, 2 Accordion Bars with Down Arrows, & Action Button */}
+                      <div className="lg:col-span-8 space-y-4">
+                        
+                        {/* 1. Top Tags Pills Row matching sketch */}
+                        <div className="flex flex-wrap items-center gap-2">
+                          {tags.map((t, idx) => (
+                            <span
+                              key={idx}
+                              className="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-[#EBF5DA] text-[#17472B] border border-[#C5DF9F] shadow-xs"
+                            >
+                              #{String(t).trim().replace(/^#/, '')}
+                            </span>
+                          ))}
                         </div>
-                      )}
-                    </div>
-                  </div>
 
-                  {/* Bottom Action Card Footer */}
-                  <div className="p-6 pt-0">
-                    <button
-                      onClick={() => setSelectedBioSpeaker(session)}
-                      className="w-full py-2.5 px-4 rounded-xl bg-[#17472B] hover:bg-[#20603B] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
-                    >
-                      <BookOpen className="w-3.5 h-3.5" />
-                      <span>View Full Bio & Abstract</span>
-                    </button>
+                        {/* 2. Accordion Bar 1: Session Abstract Dropdown Bar with Down Arrow (Collapsed by default) */}
+                        <div className="rounded-2xl border-2 border-gray-200 overflow-hidden bg-[#FBFDF9] transition-all hover:border-[#17472B]/40">
+                          <button
+                            onClick={() => toggleAbstract(session.id)}
+                            className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-emerald-50/50 transition-colors cursor-pointer"
+                          >
+                            <div className="flex items-center gap-3">
+                              <BookOpen className="w-4 h-4 text-[#17472B]" />
+                              <span className="font-black text-xs sm:text-sm text-[#123C2C] uppercase tracking-wide">
+                                Session Abstract
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#17472B] bg-[#EBF5DA] px-3 py-1.5 rounded-lg border border-[#C5DF9F]">
+                              <span>{isAbstractOpen ? 'Hide' : 'Read'}</span>
+                              {isAbstractOpen ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </div>
+                          </button>
+
+                          {isAbstractOpen && (
+                            <div className="px-5 pb-5 pt-2 border-t border-gray-100 text-xs sm:text-sm text-gray-700 leading-relaxed bg-white animate-fadeIn">
+                              <p className="font-medium">{session.abstract || 'Detailed abstract not provided.'}</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 3. Accordion Bar 2: Speaker Biography Dropdown Bar with Down Arrow (Collapsed by default) */}
+                        <div className="rounded-2xl border-2 border-gray-200 overflow-hidden bg-[#FBFDF9] transition-all hover:border-[#17472B]/40">
+                          <button
+                            onClick={() => toggleBio(session.id)}
+                            className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-emerald-50/50 transition-colors cursor-pointer"
+                          >
+                            <div className="flex items-center gap-3">
+                              <Award className="w-4 h-4 text-[#17472B]" />
+                              <span className="font-black text-xs sm:text-sm text-[#123C2C] uppercase tracking-wide">
+                                Speaker Biography
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#17472B] bg-[#EBF5DA] px-3 py-1.5 rounded-lg border border-[#C5DF9F]">
+                              <span>{isBioOpen ? 'Hide' : 'Read'}</span>
+                              {isBioOpen ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </div>
+                          </button>
+
+                          {isBioOpen && (
+                            <div className="px-5 pb-5 pt-2 border-t border-gray-100 text-xs sm:text-sm text-gray-700 leading-relaxed bg-white animate-fadeIn">
+                              <p className="font-medium">{session.bio || `${session.speakerName} is an esteemed keynote contributor to conFiqh 2026.`}</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 4. Bottom Right Action Button from sketch */}
+                        <div className="flex justify-end pt-2">
+                          <button
+                            onClick={() => setSelectedBioSpeaker(session)}
+                            className="bg-[#17472B] hover:bg-[#20603B] text-white px-6 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                          >
+                            <BookOpen className="w-4 h-4 text-emerald-300" />
+                            <span>View Full Bio & Abstract</span>
+                          </button>
+                        </div>
+
+                      </div>
+
+                    </div>
                   </div>
                 </div>
               );
