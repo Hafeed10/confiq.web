@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Search, Filter, Calendar, MapPin, Download, User, BookOpen, Layers, Clock, X, Sparkles } from 'lucide-react';
+import { ArrowLeft, Search, Filter, Calendar, MapPin, Download, User, BookOpen, Layers, Clock, X, Sparkles, ChevronDown } from 'lucide-react';
 import confiqLogo from '../assets/CONFIQ.png';
 
 export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessionsData }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState('ALL');
   const [selectedBioSpeaker, setSelectedBioSpeaker] = useState(null);
+  
+  // Interactive dropdown states for card boxes
+  const [expandedAbstracts, setExpandedAbstracts] = useState({});
+  const [expandedDesignations, setExpandedDesignations] = useState({});
+
+  const toggleAbstract = (id) => {
+    setExpandedAbstracts((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const toggleDesignation = (id) => {
+    setExpandedDesignations((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   // Scroll to top on mount
   useEffect(() => {
@@ -261,40 +273,81 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                         ))}
                       </div>
 
-                      {/* 2nd Row: Speaker Role & Affiliation Horizontal Bar with Chevron (matching wireframe) */}
-                      <div className="w-full bg-[#F8FAF6] hover:bg-[#F2F7EE] border border-[#D5E0D2] rounded-2xl p-3.5 sm:p-4 transition-colors flex items-center justify-between gap-3">
-                        <div className="min-w-0 flex-1">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
-                            Speaker Designation & Institution
-                          </span>
-                          <p className="text-xs sm:text-sm font-bold text-[#123C2C] truncate">
-                            {session.role}
-                          </p>
-                          {session.affiliation && (
-                            <p className="text-[11px] sm:text-xs font-semibold text-emerald-800 truncate mt-0.5">
-                              {session.affiliation}
+                      {/* 2nd Row: Speaker Role & Affiliation Dropdown Box */}
+                      <div 
+                        onClick={() => toggleDesignation(session.id)}
+                        className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-2xl p-3.5 sm:p-4 transition-all cursor-pointer select-none shadow-xs group/item"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
+                                Speaker Designation & Institution
+                              </span>
+                              <span className="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">
+                                {expandedDesignations[session.id] ? 'Hide' : 'Expand'}
+                              </span>
+                            </div>
+                            <p className={`text-xs sm:text-sm font-bold text-[#123C2C] ${expandedDesignations[session.id] ? '' : 'truncate'}`}>
+                              {session.role}
                             </p>
-                          )}
+                            {session.affiliation && (
+                              <p className={`text-[11px] sm:text-xs font-semibold text-emerald-800 mt-0.5 ${expandedDesignations[session.id] ? '' : 'truncate'}`}>
+                                {session.affiliation}
+                              </p>
+                            )}
+                          </div>
+                          <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#17472B] shrink-0 shadow-xs group-hover/item:border-[#17472B] transition-colors">
+                            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expandedDesignations[session.id] ? 'rotate-180 text-emerald-700' : ''}`} />
+                          </div>
                         </div>
-                        <div className="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 shrink-0 shadow-xs">
-                          <BookOpen className="w-3.5 h-3.5" />
-                        </div>
+
+                        {/* Expanded details when open */}
+                        {expandedDesignations[session.id] && session.bio && (
+                          <div className="mt-3 pt-3 border-t border-gray-200/80 animate-fadeIn">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
+                              Brief Profile:
+                            </span>
+                            <p className="text-xs text-gray-700 leading-relaxed">
+                              {session.bio}
+                            </p>
+                          </div>
+                        )}
                       </div>
 
-                      {/* 3rd Row: Session Abstract Horizontal Bar with Chevron (matching wireframe) */}
+                      {/* 3rd Row: Session Abstract & Key Takeaways Dropdown Box */}
                       {session.abstract && (
-                        <div className="w-full bg-[#F8FAF6] hover:bg-[#F2F7EE] border border-[#D5E0D2] rounded-2xl p-3.5 sm:p-4 transition-colors flex items-start justify-between gap-3">
-                          <div className="min-w-0 flex-1">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
-                              Session Abstract & Key Takeaways
+                        <div 
+                          onClick={() => toggleAbstract(session.id)}
+                          className="w-full bg-[#F8FAF6] hover:bg-[#F0F6EC] border border-[#D5E0D2] rounded-2xl p-3.5 sm:p-4 transition-all cursor-pointer select-none shadow-xs group/item"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block">
+                                  Session Abstract & Key Takeaways
+                                </span>
+                                <span className="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">
+                                  {expandedAbstracts[session.id] ? 'Collapse' : 'Dropdown'}
+                                </span>
+                              </div>
+                              <p className={`text-xs sm:text-sm text-gray-700 leading-relaxed font-medium transition-all ${
+                                expandedAbstracts[session.id] ? '' : 'line-clamp-2 sm:line-clamp-3'
+                              }`}>
+                                {session.abstract}
+                              </p>
+                            </div>
+                            <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[#17472B] shrink-0 shadow-xs group-hover/item:border-[#17472B] transition-colors mt-0.5">
+                              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expandedAbstracts[session.id] ? 'rotate-180 text-emerald-700' : ''}`} />
+                            </div>
+                          </div>
+
+                          {!expandedAbstracts[session.id] && (
+                            <span className="text-[10px] font-bold text-emerald-800 hover:underline inline-flex items-center gap-1 mt-2">
+                              <span>Click to read full abstract</span>
+                              <ChevronDown className="w-3 h-3" />
                             </span>
-                            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium line-clamp-2 sm:line-clamp-3">
-                              {session.abstract}
-                            </p>
-                          </div>
-                          <div className="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 shrink-0 shadow-xs mt-0.5">
-                            <Layers className="w-3.5 h-3.5" />
-                          </div>
+                          )}
                         </div>
                       )}
 
