@@ -199,89 +199,120 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                 setSearchQuery('');
                 setSelectedTag('ALL');
               }}
-              className="bg-[#17472B] text-white px-5 py-2 rounded-xl text-xs font-bold shadow-xs hover:bg-[#20603B]"
+              className="bg-[#17472B] text-white px-5 py-2 rounded-xl text-xs font-bold shadow-xs hover:bg-[#20603B] cursor-pointer"
             >
               Clear Filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="space-y-6 sm:space-y-8">
             {filteredSessions.map((session) => {
               const tags = Array.isArray(session.tags) ? session.tags : [session.tags];
               return (
                 <div
                   key={session.id}
-                  className="bg-white rounded-3xl border border-[#D5E0D2] shadow-sm hover:shadow-md transition-all flex flex-col justify-between overflow-hidden group hover:-translate-y-1"
+                  className="bg-white rounded-3xl border-2 border-[#D5E0D2] shadow-sm hover:shadow-md transition-all p-5 sm:p-8 relative overflow-hidden group"
                 >
-                  <div>
-                    {/* Top Speaker Image & Flag Header */}
-                    <div className="p-6 pb-4 bg-[#F8FAF6] border-b border-gray-100 flex items-center gap-4">
-                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white shadow-sm border-2 border-white shrink-0">
+                  {/* Top-Left Speech Bubble / Badge Icon (matching wireframe) */}
+                  <div className="absolute top-0 left-0 bg-[#17472B] text-white px-3 py-1.5 rounded-br-2xl flex items-center gap-1.5 shadow-sm z-10">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span className="text-[10px] font-black uppercase tracking-wider">Keynote Session</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center pt-2">
+                    
+                    {/* Left Column: Large Circular Avatar Frame & Speaker Name (matching wireframe) */}
+                    <div className="lg:col-span-4 flex flex-col items-center justify-center text-center">
+                      <div className="w-32 h-32 sm:w-44 sm:h-44 rounded-full overflow-hidden bg-[#F0F5EC] border-4 border-[#17472B]/30 shadow-md p-1 group-hover:border-[#17472B] transition-all shrink-0">
                         <img
                           src={session.photo}
                           alt={session.speakerName}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover rounded-full"
                           onError={(e) => {
                             e.target.src = '/zack_wilson.jpg';
                           }}
                         />
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-sans text-lg sm:text-xl font-black text-[#123C2C] truncate">
+
+                      {/* Speaker Name with underline indicator */}
+                      <div className="mt-3.5">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <h3 className="font-sans text-lg sm:text-xl font-black text-[#123C2C]">
                             {session.speakerName}
                           </h3>
-                          <span className="text-lg shrink-0">{session.flag}</span>
+                          <span className="text-base sm:text-lg">{session.flag}</span>
                         </div>
-                        <p className="text-xs font-bold text-gray-600 line-clamp-1 mt-0.5">
-                          {session.role}
-                        </p>
-                        {session.affiliation && (
-                          <p className="text-[11px] font-semibold text-emerald-800 line-clamp-1 mt-0.5">
-                            {session.affiliation}
-                          </p>
-                        )}
+                        <div className="w-16 h-1 bg-[#17472B] rounded-full mx-auto mt-1.5"></div>
                       </div>
                     </div>
 
-                    {/* Session Abstract & Tags Body */}
-                    <div className="p-6 space-y-4">
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5">
+                    {/* Right Column: Tags, Role Bar, Abstract Bar & Action Button (matching wireframe) */}
+                    <div className="lg:col-span-8 space-y-3.5 min-w-0">
+                      
+                      {/* 1st Row: Topic Tag Pills (matching wireframe) */}
+                      <div className="flex flex-wrap items-center gap-2">
                         {tags.map((t, idx) => (
                           <span
                             key={idx}
-                            className="px-2.5 py-1 rounded-md text-[10px] font-extrabold bg-[#EBF5DA] text-[#17472B] border border-[#C5DF9F]"
+                            className="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-[#EEF3EA] text-[#17472B] border border-[#C5DF9F] shadow-xs"
                           >
                             #{t}
                           </span>
                         ))}
                       </div>
 
-                      {/* Abstract */}
-                      {session.abstract && (
-                        <div className="bg-[#F8FAF6] p-3.5 rounded-xl border border-gray-100">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-1">
-                            Session Abstract
+                      {/* 2nd Row: Speaker Role & Affiliation Horizontal Bar with Chevron (matching wireframe) */}
+                      <div className="w-full bg-[#F8FAF6] hover:bg-[#F2F7EE] border border-[#D5E0D2] rounded-2xl p-3.5 sm:p-4 transition-colors flex items-center justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
+                            Speaker Designation & Institution
                           </span>
-                          <p className="text-xs text-gray-700 leading-relaxed font-medium line-clamp-4">
-                            {session.abstract}
+                          <p className="text-xs sm:text-sm font-bold text-[#123C2C] truncate">
+                            {session.role}
                           </p>
+                          {session.affiliation && (
+                            <p className="text-[11px] sm:text-xs font-semibold text-emerald-800 truncate mt-0.5">
+                              {session.affiliation}
+                            </p>
+                          )}
+                        </div>
+                        <div className="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 shrink-0 shadow-xs">
+                          <BookOpen className="w-3.5 h-3.5" />
+                        </div>
+                      </div>
+
+                      {/* 3rd Row: Session Abstract Horizontal Bar with Chevron (matching wireframe) */}
+                      {session.abstract && (
+                        <div className="w-full bg-[#F8FAF6] hover:bg-[#F2F7EE] border border-[#D5E0D2] rounded-2xl p-3.5 sm:p-4 transition-colors flex items-start justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-gray-500 block mb-0.5">
+                              Session Abstract & Key Takeaways
+                            </span>
+                            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium line-clamp-2 sm:line-clamp-3">
+                              {session.abstract}
+                            </p>
+                          </div>
+                          <div className="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 shrink-0 shadow-xs mt-0.5">
+                            <Layers className="w-3.5 h-3.5" />
+                          </div>
                         </div>
                       )}
+
+                      {/* Bottom-Right: Action Button (matching wireframe) */}
+                      <div className="pt-2 flex justify-end">
+                        <button
+                          onClick={() => setSelectedBioSpeaker(session)}
+                          className="bg-[#17472B] hover:bg-[#20603B] text-white px-6 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                        >
+                          <BookOpen className="w-4 h-4 text-white" />
+                          <span>View Full Bio & Abstract</span>
+                        </button>
+                      </div>
+
                     </div>
+
                   </div>
 
-                  {/* Bottom Action Card Footer */}
-                  <div className="p-6 pt-0">
-                    <button
-                      onClick={() => setSelectedBioSpeaker(session)}
-                      className="w-full py-2.5 px-4 rounded-xl bg-[#17472B] hover:bg-[#20603B] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
-                    >
-                      <BookOpen className="w-3.5 h-3.5" />
-                      <span>View Full Bio & Abstract</span>
-                    </button>
-                  </div>
                 </div>
               );
             })}
