@@ -11,13 +11,13 @@ export default function AdminDashboard({ onReturnToPublic, sessionsData = [], se
     return sessionStorage.getItem('confiqh_admin_auth') === 'true';
   });
 
-  // Login form inputs (Phone Number & DOB DD/MM/YY)
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [dob, setDob] = useState('');
+  // Login form inputs (Username & Password)
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false);
 
   // Dashboard state
-  const [activeTab, setActiveTab] = useState('delegates');
+  const [activeTab, setActiveTab] = useState('sessions');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStudyRange, setFilterStudyRange] = useState('All');
   const [loading, setLoading] = useState(false);
@@ -356,7 +356,7 @@ export default function AdminDashboard({ onReturnToPublic, sessionsData = [], se
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    if (phoneNumber.trim() && dob.trim()) {
+    if (username.trim() === 'confiq' && password.trim() === 'confiq123') {
       sessionStorage.setItem('confiqh_admin_auth', 'true');
       setIsAuthenticated(true);
       setLoginError(false);
@@ -515,54 +515,55 @@ export default function AdminDashboard({ onReturnToPublic, sessionsData = [], se
               <Lock className="w-7 h-7" />
             </div>
             <h2 className="font-sans text-2xl sm:text-3xl font-black text-[#17472B]">
-              Registration Portal Login
+              Admin Secretariat Login
             </h2>
             <p className="text-xs font-bold text-[#387B52] mt-1">
-              conFiqh 2026 • Enter your Phone Number & Date of Birth
+              conFiqh 2026 • Enter your Admin Credentials
             </p>
           </div>
 
           {loginError && (
             <div className="bg-red-50 text-red-700 p-3.5 rounded-xl border border-red-200 text-xs font-bold mb-5 flex items-center gap-2">
               <ShieldAlert className="w-5 h-5 text-red-600 shrink-0" />
-              <span>Please enter a valid Phone Number and Date of Birth (DD/MM/YY).</span>
+              <span>Invalid username or password. Please try again.</span>
             </div>
           )}
 
           <form onSubmit={handleLoginSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold uppercase text-[#17472B] tracking-wider mb-1">
-                Phone Number *
+                Username *
               </label>
               <input
-                type="tel"
+                type="text"
                 required
-                placeholder="e.g. 7558889458"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Username (e.g. confiq)"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#17472B] focus:ring-2 focus:ring-[#17472B]/20 text-sm font-medium outline-none transition-all"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold uppercase text-[#17472B] tracking-wider mb-1">
-                Date of Birth (Calendar) *
+                Password *
               </label>
               <input
-                type="date"
+                type="password"
                 required
-                value={dob}
-                onChange={(e) => setDob(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#17472B] focus:ring-2 focus:ring-[#17472B]/20 text-sm font-medium outline-none transition-all cursor-pointer bg-white"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#17472B] focus:ring-2 focus:ring-[#17472B]/20 text-sm font-medium outline-none transition-all bg-white"
               />
             </div>
 
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full bg-[#17472B] hover:bg-[#20603B] text-white py-3.5 rounded-xl font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2"
+                className="w-full bg-[#17472B] hover:bg-[#20603B] text-white py-3.5 rounded-xl font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Login to Registration Portal</span>
+                <span>Login to Admin CMS</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -571,7 +572,7 @@ export default function AdminDashboard({ onReturnToPublic, sessionsData = [], se
           <div className="mt-6 text-center">
             <button
               onClick={onReturnToPublic}
-              className="text-xs font-bold text-gray-500 hover:text-[#17472B] transition-colors"
+              className="text-xs font-bold text-gray-500 hover:text-[#17472B] transition-colors cursor-pointer"
             >
               ← Back to Public Website
             </button>
@@ -644,19 +645,8 @@ export default function AdminDashboard({ onReturnToPublic, sessionsData = [], se
         {/* Nav Tabs */}
         <div className="flex flex-wrap gap-2 border-b border-gray-200 pb-4 mb-8">
           <button
-            onClick={() => setActiveTab('delegates')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${activeTab === 'delegates'
-              ? 'bg-[#17472B] text-white shadow-md'
-              : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-              }`}
-          >
-            <Users className="w-4 h-4" />
-            <span>Delegates Database ({delegates.length})</span>
-          </button>
-
-          <button
             onClick={() => setActiveTab('sessions')}
-            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${activeTab === 'sessions'
+            className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'sessions'
               ? 'bg-[#17472B] text-white shadow-md'
               : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
               }`}

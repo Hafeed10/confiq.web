@@ -2,29 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, 
   Search, 
-  Filter, 
-  Calendar, 
-  MapPin, 
   Download, 
-  User, 
   BookOpen, 
-  Layers, 
-  Clock, 
   X, 
-  Sparkles,
-  ChevronDown,
-  ChevronUp,
+  Sparkles, 
+  ChevronDown, 
+  ChevronUp, 
   MessageSquareQuote,
   Award
 } from 'lucide-react';
 import confiqLogo from '../assets/CONFIQ.png';
+import Footer from '../components/common/Footer';
 
 export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessionsData }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTag, setSelectedTag] = useState('ALL');
   const [selectedBioSpeaker, setSelectedBioSpeaker] = useState(null);
 
-  // Accordion state tracking for individual cards (both collapsed by default on initial view)
+  // Accordion state tracking for individual cards (collapsed by default)
   const [expandedAbstracts, setExpandedAbstracts] = useState({});
   const [expandedBios, setExpandedBios] = useState({});
 
@@ -41,48 +35,7 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const defaultSessions = [
-    {
-      id: 'session-1',
-      speakerName: 'Zack Wilson',
-      flag: '🇬🇧',
-      role: 'Senior Product Designer at Meta',
-      affiliation: 'Lead Researcher in AI Fatwa Limits & UX Guardrails',
-      photo: '/zack_wilson.jpg',
-      tags: ['UX/UI design', 'Product design', 'Copywriting'],
-      bio: 'Zack Wilson is a Senior Product Designer at Meta with over 12 years of experience designing complex algorithmic interfaces and human-AI interaction patterns.',
-      abstract: 'This session explores how user interfaces can transparently signal AI confidence levels, prevent automated fatwa hallucinations, and preserve human scholarly authority in digital legal consultations.'
-    },
-    {
-      id: 'session-2',
-      speakerName: 'Dr. Abdullah Al-Makhdoomi',
-      flag: '🇮🇳',
-      role: 'Professor of Shafi\'i Jurisprudence',
-      affiliation: 'Ahlussuffa Dars Complex & Ponnani Research Chair',
-      photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
-      tags: ['Shafi\'i Fiqh', 'Makhdoomi Legacy', 'Maritime Trade'],
-      bio: 'Dr. Abdullah Al-Makhdoomi is a distinguished scholar of classical Shafi\'ite jurisprudence and author of 14 treatises on Indian Ocean maritime legal history.',
-      abstract: 'An analytical review of how 16th-century Shafi\'i jurists in Malabar resolved novel trade contracts and maritime disputes.'
-    },
-    {
-      id: 'session-3',
-      speakerName: 'Sheikh Ibrahim Al-Kerali',
-      flag: '🇦🇪',
-      role: 'Islamic Finance & Crypto Ethicist',
-      affiliation: 'Advisor to Global Decentralized Finance Protocols',
-      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600',
-      tags: ['DeFi Yields', 'Smart Contracts', 'Crypto Fiqh'],
-      bio: 'Sheikh Ibrahim Al-Kerali is a pioneer in Islamic Fintech and cryptocurrency jurisprudence.',
-      abstract: 'Evaluating liquidity pool staking, automated market makers (AMMs), and algorithmic stablecoins under traditional legal maxims.'
-    }
-  ];
-
-  const sessions = sessionsData && sessionsData.length > 0 ? sessionsData : defaultSessions;
-
-  // Extract all unique tags
-  const allTags = ['ALL', ...new Set(
-    sessions.flatMap((s) => (Array.isArray(s.tags) ? s.tags : [s.tags])).filter(Boolean)
-  )];
+  const sessions = sessionsData || [];
 
   // Filtered sessions based on search query
   const filteredSessions = sessions.filter((s) => {
@@ -138,7 +91,7 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
       </header>
 
       {/* Hero Section of Sessions Page */}
-      <section className="bg-[#EBF5DA] py-10 sm:py-16 border-b border-[#C5DF9F]/70 relative overflow-hidden">
+      <section className="bg-[#EBF5DA] py-10 sm:py-14 border-b border-[#C5DF9F]/70 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="inline-flex items-center gap-2 bg-[#17472B]/10 border border-[#17472B]/20 text-[#17472B] px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-4">
             <Sparkles className="w-3.5 h-3.5" />
@@ -177,7 +130,7 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
         </div>
       </section>
 
-      {/* Main Sessions Grid */}
+      {/* Main Sessions Feed */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 flex-grow w-full">
         <div className="flex items-center justify-between mb-8 pb-3 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-black text-[#123C2C] uppercase tracking-wide">
@@ -197,7 +150,7 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
             </div>
             <h3 className="text-lg font-bold text-[#123C2C]">No sessions match your search</h3>
             <p className="text-xs text-gray-600">
-              Try adjusting your search terms or selecting "All Topics" to view all available sessions.
+              Try adjusting your search terms to view all available sessions.
             </p>
             <button
               onClick={() => setSearchQuery('')}
@@ -362,7 +315,7 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
         )}
       </main>
 
-      {/* Speaker Full Bio Modal */}
+      {/* Speaker Full Profile Modal */}
       {selectedBioSpeaker && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fadeIn">
           <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative border border-gray-200 max-h-[90vh] overflow-y-auto no-scrollbar">
@@ -375,7 +328,7 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
             </button>
 
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white shadow border-2 border-white shrink-0">
+              <div className="w-20 h-20 rounded-full overflow-hidden bg-[#EEF3EA] shadow border-2 border-[#17472B] shrink-0">
                 <img
                   src={selectedBioSpeaker.photo}
                   alt={selectedBioSpeaker.speakerName}
@@ -408,7 +361,7 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                 <h4 className="text-xs font-black uppercase tracking-wider text-gray-500 mb-2">
                   Speaker Biography
                 </h4>
-                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
                   {selectedBioSpeaker.bio}
                 </p>
               </div>
@@ -429,30 +382,19 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
               onClick={() => setSelectedBioSpeaker(null)}
               className="w-full py-3 bg-[#123C2C] hover:bg-[#1C5842] text-white rounded-xl font-bold text-xs sm:text-sm shadow cursor-pointer transition-colors"
             >
-              Close
+              Close Profile
             </button>
           </div>
         </div>
       )}
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-8 text-center text-xs text-gray-600">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full bg-[#17472B] text-white flex items-center justify-center font-black text-[10px]">
-              C
-            </div>
-            <span className="font-medium">© 2026 CON FIQH • AHLUSSUFFA Dars</span>
-          </div>
-          <button
-            onClick={onBackToHome}
-            className="text-[#17472B] font-bold hover:underline cursor-pointer flex items-center gap-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Return to Summit Homepage</span>
-          </button>
-        </div>
-      </footer>
+      {/* Unified Footer */}
+      <Footer
+        onOpenBrochure={onOpenBrochure}
+        scrollToSection={(sec) => {
+          onBackToHome();
+        }}
+      />
     </div>
   );
 }

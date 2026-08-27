@@ -1,6 +1,6 @@
 import React from 'react';
-import { Mail } from 'lucide-react';
-import confiqLogo from '../assets/CONFIQ.png';
+import { IslamicStarIcon, IslamicScrollIcon } from './IslamicIcons';
+import confiqLogo from '../../assets/CONFIQ.png';
 
 export default function Footer({ onOpenBrochure, scrollToSection }) {
   return (
@@ -77,7 +77,7 @@ export default function Footer({ onOpenBrochure, scrollToSection }) {
                   href="mailto:contact@confiqh.com"
                   className="inline-flex items-center gap-1.5 text-[#17472B] font-bold hover:underline"
                 >
-                  <Mail className="w-3.5 h-3.5" />
+                  <IslamicScrollIcon className="w-3.5 h-3.5 text-[#2B6D45]" />
                   <span>contact@confiqh.com</span>
                 </a>
               </div>
@@ -104,7 +104,7 @@ export default function Footer({ onOpenBrochure, scrollToSection }) {
             <span className="text-gray-300">•</span>
             <a 
               href="#privacy" 
-              onClick={(e) => { e.preventDefault(); alert('Privacy Policy: Delegate registration data is strictly used for summit organization.'); }} 
+              onClick={(e) => { e.preventDefault(); alert('Privacy Policy: Summit information is strictly used for official conference communication.'); }} 
               className="hover:text-[#17472B] transition-colors"
             >
               Privacy
@@ -112,7 +112,7 @@ export default function Footer({ onOpenBrochure, scrollToSection }) {
             <span className="text-gray-300">•</span>
             <a 
               href="#terms" 
-              onClick={(e) => { e.preventDefault(); alert('Terms: Registration is subject to eligibility requirements for scholars and students.'); }} 
+              onClick={(e) => { e.preventDefault(); alert('Terms: Conference schedules and participation are subject to official summit terms.'); }} 
               className="hover:text-[#17472B] transition-colors"
             >
               Terms

@@ -1,46 +1,19 @@
 import React from 'react';
-import { ShieldCheck, Cpu, Dna, BookMarked, Award, Sparkles, Compass } from 'lucide-react';
+import { 
+  IslamicChipIcon, 
+  IslamicStarIcon, 
+  IslamicBioNodeIcon, 
+  IslamicBookIcon, 
+  IslamicArchIcon, 
+  IslamicCompassIcon, 
+  IslamicScrollIcon 
+} from '../common/IslamicIcons';
 
 export default function AcademicTracks({ tracksData }) {
-  const defaultTracks = [
-    {
-      id: 'track-1',
-      title: 'Decentralized Crypto Finance & Smart Contracts',
-      code: 'TRACK 01',
-      description: 'Examining tokenomics, decentralized liquidity pools, automated market makers (AMMs), and staking rewards under Islamic jurisprudence and Usul al-Fiqh.',
-      topics: ['DeFi Yield Farming', 'Algorithmic Stablecoins', 'Smart Contract Gharar'],
-      speakersCount: '4 Keynotes'
-    },
-    {
-      id: 'track-2',
-      title: 'Artificial Intelligence & Algorithmic Fatwa Limits',
-      code: 'TRACK 02',
-      description: 'Delineating ethical boundary conditions, LLM hallucination risks, and legal accountability when AI agents generate legal opinions or fatwas.',
-      topics: ['LLM Jurisprudential Limits', 'Autonomous Ijtihad Risks', 'Algorithmic Bias'],
-      speakersCount: '5 Sessions'
-    },
-    {
-      id: 'track-3',
-      title: 'CRISPR Gene Editing & Bioethical Jurisprudence',
-      code: 'TRACK 03',
-      description: 'Scholarly evaluation of somatic vs. germline modification, human enhancement boundaries, synthetic biology, and genetic patenting in Fiqh.',
-      topics: ['Germline Editing Limits', 'Gene Therapy Fiqh', 'Genomic Privacy'],
-      speakersCount: '3 Panels'
-    },
-    {
-      id: 'track-4',
-      title: 'Makhdoomi Shafi\'i Heritage & Applied Jurisprudence',
-      code: 'TRACK 04',
-      description: 'Tracing the Indian Ocean jurisprudence tradition from Ponnani Makhdooms to contemporary Malabar Coast legal applications.',
-      topics: ['Makhdoomi Manuscripts', 'Maritime Jurisprudence', 'Contemporary Nawazil'],
-      speakersCount: '6 Lectures'
-    }
-  ];
-
-  const tracksToRender = (tracksData && tracksData.length > 0) ? tracksData : defaultTracks;
+  const tracksToRender = tracksData || [];
 
   const getTrackIcon = (index) => {
-    const icons = [ShieldCheck, Cpu, Dna, BookMarked, Award, Sparkles, Compass];
+    const icons = [IslamicChipIcon, IslamicStarIcon, IslamicBioNodeIcon, IslamicBookIcon, IslamicArchIcon, IslamicCompassIcon, IslamicScrollIcon];
     return icons[index % icons.length];
   };
 

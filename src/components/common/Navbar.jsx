@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { Menu, X, Layers, Calendar, Clock, Download, Home } from 'lucide-react';
-import confiqLogo from '../assets/CONFIQ.png';
+import { Menu, X } from 'lucide-react';
+import { 
+  IslamicStarIcon, 
+  IslamicArchIcon, 
+  IslamicBookIcon, 
+  IslamicCompassIcon, 
+  IslamicScrollIcon 
+} from './IslamicIcons';
+import confiqLogo from '../../assets/CONFIQ.png';
 
 export default function Navbar({ onOpenBrochure, scrollToSection }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,7 +54,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
               onClick={() => handleNavClick('tracks')}
               className="px-3 py-2 rounded-xl text-xs lg:text-sm font-bold text-[#17472B] hover:bg-[#DDF0C2] transition-colors flex items-center gap-1.5"
             >
-              <Layers className="w-3.5 h-3.5 text-[#387B52]" />
+              <IslamicStarIcon className="w-3.5 h-3.5 text-[#387B52]" />
               <span>Academic Tracks</span>
             </button>
 
@@ -55,7 +62,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
               onClick={() => handleNavClick('sessions')}
               className="px-3 py-2 rounded-xl text-xs lg:text-sm font-bold text-[#17472B] hover:bg-[#DDF0C2] transition-colors flex items-center gap-1.5"
             >
-              <Calendar className="w-3.5 h-3.5 text-[#387B52]" />
+              <IslamicBookIcon className="w-3.5 h-3.5 text-[#387B52]" />
               <span>Sessions</span>
             </button>
 
@@ -63,7 +70,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
               onClick={() => handleNavClick('countdown')}
               className="px-3 py-2 rounded-xl text-xs lg:text-sm font-bold text-[#17472B] hover:bg-[#DDF0C2] transition-colors flex items-center gap-1.5"
             >
-              <Clock className="w-3.5 h-3.5 text-[#387B52]" />
+              <IslamicCompassIcon className="w-3.5 h-3.5 text-[#387B52]" />
               <span>Countdown</span>
             </button>
           </div>
@@ -74,7 +81,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
               onClick={onOpenBrochure}
               className="hidden sm:flex bg-[#17472B] hover:bg-[#20603B] text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all items-center gap-1.5 whitespace-nowrap cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <IslamicScrollIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D8ECC0]" />
               <span>Brochure</span>
             </button>
 
@@ -109,7 +116,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
               onClick={() => handleNavClick('top')}
               className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#17472B] hover:bg-[#DDF0C2] transition-colors text-left"
             >
-              <Home className="w-4 h-4 text-[#387B52]" />
+              <IslamicArchIcon className="w-4 h-4 text-[#387B52]" />
               <span>Home Overview</span>
             </button>
 
@@ -117,7 +124,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
               onClick={() => handleNavClick('tracks')}
               className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#17472B] hover:bg-[#DDF0C2] transition-colors text-left"
             >
-              <Layers className="w-4 h-4 text-[#387B52]" />
+              <IslamicStarIcon className="w-4 h-4 text-[#387B52]" />
               <span>Academic Tracks</span>
             </button>
 
@@ -125,7 +132,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
               onClick={() => handleNavClick('sessions')}
               className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#17472B] hover:bg-[#DDF0C2] transition-colors text-left"
             >
-              <Calendar className="w-4 h-4 text-[#387B52]" />
+              <IslamicBookIcon className="w-4 h-4 text-[#387B52]" />
               <span>Scheduled Sessions</span>
             </button>
 
@@ -133,7 +140,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
               onClick={() => handleNavClick('countdown')}
               className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#17472B] hover:bg-[#DDF0C2] transition-colors text-left"
             >
-              <Clock className="w-4 h-4 text-[#387B52]" />
+              <IslamicCompassIcon className="w-4 h-4 text-[#387B52]" />
               <span>Summit Countdown</span>
             </button>
 
@@ -145,7 +152,7 @@ export default function Navbar({ onOpenBrochure, scrollToSection }) {
                 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#17472B] hover:bg-[#20603B] transition-colors cursor-pointer shadow-xs"
               >
-                <Download className="w-3.5 h-3.5 text-white" />
+                <IslamicScrollIcon className="w-3.5 h-3.5 text-[#D8ECC0]" />
                 <span>Download Brochure</span>
               </button>
             </div>

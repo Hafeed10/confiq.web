@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock } from 'lucide-react';
+import { IslamicCompassIcon } from '../common/IslamicIcons';
 
 export default function CountdownSection() {
   const targetDate = new Date('2026-09-11T09:00:00+05:30').getTime();
@@ -63,8 +63,8 @@ export default function CountdownSection() {
         {/* Dynamic Countdown Display */}
         <div className="bg-[#EEF3EA] rounded-3xl p-8 sm:p-10 border border-[#D5E0D2]">
 
-          <div className="flex items-center gap-2 mb-6 text-[#123C2C] font-bold text-sm">
-            <Clock className="w-5 h-5" />
+          <div className="flex items-center gap-2.5 mb-6 text-[#123C2C] font-bold text-sm">
+            <IslamicCompassIcon className="w-5 h-5 text-[#2B6D45]" />
             <span>Countdown to Summit Inauguration • 11 September 2026</span>
           </div>
 

@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import AcademicIntro from './components/AcademicIntro';
-import AcademicTracks from './components/AcademicTracks';
-import ScheduledSessions from './components/ScheduledSessions';
-import GeometricPatternDivider from './components/GeometricPatternDivider';
-import CountdownSection from './components/CountdownSection';
-import BrochureModal from './components/BrochureModal';
-import Footer from './components/Footer';
-import AdminDashboard from './components/AdminDashboard';
-import AllSessionsPage from './components/AllSessionsPage';
+// Common Layout Components
+import Navbar from './components/common/Navbar';
+import Footer from './components/common/Footer';
+import GeometricPatternDivider from './components/common/GeometricPatternDivider';
+import BrochureModal from './components/common/BrochureModal';
+
+// Home Feature Components
+import Hero from './components/home/Hero';
+import QuickLinksSection from './components/home/QuickLinksSection';
+import AcademicIntro from './components/home/AcademicIntro';
+import AcademicTracks from './components/home/AcademicTracks';
+import ScheduledSessions from './components/home/ScheduledSessions';
+import CountdownSection from './components/home/CountdownSection';
+
+// Page Views
+import AdminDashboard from './pages/AdminDashboard';
+import AllSessionsPage from './pages/AllSessionsPage';
 
 import { supabase } from './lib/supabase';
 
@@ -50,84 +56,11 @@ export default function App() {
     };
   }, []);
 
-  // Initial default sessions
-  const defaultSessionsList = [
-    {
-      id: 'session-1',
-      speakerName: 'Zack Wilson',
-      flag: '🇬🇧',
-      role: 'Senior Product Designer at Meta',
-      affiliation: 'Lead Researcher in AI Fatwa Limits & UX Guardrails',
-      photo: '/zack_wilson.jpg',
-      tags: ['UX/UI design', 'Product design', 'Copywriting'],
-      bio: 'Zack Wilson is a Senior Product Designer at Meta with over 12 years of experience designing complex algorithmic interfaces and human-AI interaction patterns.',
-      abstract: 'This session explores how user interfaces can transparently signal AI confidence levels, prevent automated fatwa hallucinations, and preserve human scholarly authority in digital legal consultations.'
-    },
-    {
-      id: 'session-2',
-      speakerName: 'Dr. Abdullah Al-Makhdoomi',
-      flag: '🇮🇳',
-      role: 'Professor of Shafi\'i Jurisprudence',
-      affiliation: 'Ahlussuffa Dars Complex & Ponnani Research Chair',
-      photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
-      tags: ['Shafi\'i Fiqh', 'Makhdoomi Legacy', 'Maritime Trade'],
-      bio: 'Dr. Abdullah Al-Makhdoomi is a distinguished scholar of classical Shafi\'ite jurisprudence and author of 14 treatises on Indian Ocean maritime legal history.',
-      abstract: 'An analytical review of how 16th-century Shafi\'i jurists in Malabar resolved novel trade contracts and maritime disputes.'
-    },
-    {
-      id: 'session-3',
-      speakerName: 'Sheikh Ibrahim Al-Kerali',
-      flag: '🇦🇪',
-      role: 'Islamic Finance & Crypto Ethicist',
-      affiliation: 'Advisor to Global Decentralized Finance Protocols',
-      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600',
-      tags: ['DeFi Yields', 'Smart Contracts', 'Crypto Fiqh'],
-      bio: 'Sheikh Ibrahim Al-Kerali is a pioneer in Islamic Fintech and cryptocurrency jurisprudence.',
-      abstract: 'Evaluating liquidity pool staking, automated market makers (AMMs), and algorithmic stablecoins under traditional legal maxims.'
-    }
-  ];
+  // Shared sessions state (loaded dynamically from Supabase)
+  const [sessionsData, setSessionsData] = useState([]);
 
-  // Shared sessions state
-  const [sessionsData, setSessionsData] = useState(defaultSessionsList);
-
-  // Initial default academic tracks
-  const defaultTracksList = [
-    {
-      id: 'track-1',
-      title: 'Decentralized Crypto Finance & Smart Contracts',
-      code: 'TRACK 01',
-      description: 'Examining tokenomics, decentralized liquidity pools, automated market makers (AMMs), and staking rewards under Islamic jurisprudence and Usul al-Fiqh.',
-      topics: ['DeFi Yield Farming', 'Algorithmic Stablecoins', 'Smart Contract Gharar'],
-      speakersCount: '4 Keynotes'
-    },
-    {
-      id: 'track-2',
-      title: 'Artificial Intelligence & Algorithmic Fatwa Limits',
-      code: 'TRACK 02',
-      description: 'Delineating ethical boundary conditions, LLM hallucination risks, and legal accountability when AI agents generate legal opinions or fatwas.',
-      topics: ['LLM Jurisprudential Limits', 'Autonomous Ijtihad Risks', 'Algorithmic Bias'],
-      speakersCount: '5 Sessions'
-    },
-    {
-      id: 'track-3',
-      title: 'CRISPR Gene Editing & Bioethical Jurisprudence',
-      code: 'TRACK 03',
-      description: 'Scholarly evaluation of somatic vs. germline modification, human enhancement boundaries, synthetic biology, and genetic patenting in Fiqh.',
-      topics: ['Germline Editing Limits', 'Gene Therapy Fiqh', 'Genomic Privacy'],
-      speakersCount: '3 Panels'
-    },
-    {
-      id: 'track-4',
-      title: 'Makhdoomi Shafi\'i Heritage & Applied Jurisprudence',
-      code: 'TRACK 04',
-      description: 'Tracing the Indian Ocean jurisprudence tradition from Ponnani Makhdooms to contemporary Malabar Coast legal applications.',
-      topics: ['Makhdoomi Manuscripts', 'Maritime Jurisprudence', 'Contemporary Nawazil'],
-      speakersCount: '6 Lectures'
-    }
-  ];
-
-  // Shared tracks state
-  const [tracksData, setTracksData] = useState(defaultTracksList);
+  // Shared tracks state (loaded dynamically from Supabase)
+  const [tracksData, setTracksData] = useState([]);
 
   const fetchSupabaseSessions = async () => {
     try {
@@ -136,17 +69,17 @@ export default function App() {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         const mapped = data.map((s) => ({
           id: s.id,
           speakerName: s.speaker_name || s.speakerName,
           flag: s.flag || '🇬🇧',
-          role: s.role,
-          affiliation: s.affiliation,
+          role: s.role || '',
+          affiliation: s.affiliation || '',
           photo: s.photo || '/zack_wilson.jpg',
           tags: Array.isArray(s.tags) ? s.tags : (s.tags ? s.tags.split(',') : []),
-          bio: s.bio,
-          abstract: s.abstract
+          bio: s.bio || '',
+          abstract: s.abstract || ''
         }));
         setSessionsData(mapped);
       }
@@ -162,12 +95,12 @@ export default function App() {
         .select('*')
         .order('created_at', { ascending: true });
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         const mapped = data.map((t) => ({
           id: t.id,
-          title: t.title,
+          title: t.title || '',
           code: t.code || 'TRACK 01',
-          description: t.description,
+          description: t.description || '',
           topics: Array.isArray(t.topics) ? t.topics : (t.topics ? t.topics.split(',') : []),
           speakersCount: t.speakers_count || t.speakersCount || '4 Sessions'
         }));
@@ -292,7 +225,13 @@ export default function App() {
           scrollToSection={scrollToSection}
         />
 
-        {/* 2. Academic Summit for Applied Fiqh Intro Section */}
+        {/* 2. Quick Links Section (4 Squircles + 3 Action Buttons) */}
+        <QuickLinksSection 
+          onOpenBrochure={() => setIsBrochureOpen(true)}
+          scrollToSection={scrollToSection}
+        />
+
+        {/* 3. Academic Summit for Applied Fiqh Intro Section */}
         <AcademicIntro />
 
         {/* 3. Academic Tracks Grid */}
