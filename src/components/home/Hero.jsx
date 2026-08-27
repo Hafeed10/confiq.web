@@ -16,8 +16,8 @@ export default function Hero({ onOpenBrochure, scrollToSection }) {
           {/* Left Column: CON FIQH Typography + Summit Banner */}
           <div className="lg:col-span-7 flex flex-col items-start justify-start pt-2 sm:pt-4">
 
-            {/* Locked Proportional Brand Group (Increased Size) */}
-            <div className="w-full max-w-[320px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[580px] flex flex-col items-start">
+            {/* Locked Proportional Brand Group */}
+            <div className="w-full max-w-[280px] sm:max-w-[400px] md:max-w-[480px] lg:max-w-[580px] flex flex-col items-start">
 
               {/* CON FIQH & The First Edition */}
               <div className="w-full mb-3 sm:mb-4">
@@ -42,13 +42,13 @@ export default function Hero({ onOpenBrochure, scrollToSection }) {
           </div>
 
           {/* Right Column: Islamic Tessellation Pattern Block & Date Badge */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end -mt-4 sm:-mt-8 pr-0 lg:pr-6">
+          <div className="lg:col-span-5 flex justify-center lg:justify-end mt-8 sm:mt-10 lg:-mt-8 pr-0 lg:pr-6">
 
             {/* Shared Centered Column for Pattern & Dates */}
             <div className="flex flex-col items-center">
 
-              {/* Pattern Hanging from Top (Increased Size) */}
-              <div className="w-36 sm:w-46 md:w-54 lg:w-60 xl:w-64 flex justify-center">
+              {/* Pattern Hanging from Top */}
+              <div className="w-32 sm:w-44 md:w-52 lg:w-60 xl:w-64 flex justify-center">
                 <img
                   src={patternImg}
                   alt="Islamic Geometric Tessellation Pattern"
@@ -56,12 +56,12 @@ export default function Hero({ onOpenBrochure, scrollToSection }) {
                 />
               </div>
 
-              {/* Date and Location Badge centered directly under the pattern (Increased Size) */}
-              <div className="mt-5 sm:mt-6 flex justify-center w-full">
+              {/* Date and Location Badge centered directly under the pattern */}
+              <div className="mt-4 sm:mt-6 flex justify-center w-full">
                 <img
                   src={dateBadgeImg}
                   alt="11-12 September 2026 - Parapram, Pinarayi"
-                  className="w-full max-w-[160px] sm:max-w-[190px] md:max-w-[220px] lg:max-w-[250px] h-auto object-contain select-none mx-auto filter drop-shadow-[0_6px_12px_rgba(0,0,0,0.08)]"
+                  className="w-full max-w-[140px] sm:max-w-[180px] md:max-w-[210px] lg:max-w-[250px] h-auto object-contain select-none mx-auto filter drop-shadow-[0_6px_12px_rgba(0,0,0,0.08)]"
                 />
               </div>
 

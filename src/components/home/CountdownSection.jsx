@@ -74,11 +74,11 @@ export default function CountdownSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Title Row matching PDF */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center mb-12 sm:mb-16">
 
           {/* Left Title: Let's witness the first Edition */}
           <div className="lg:col-span-6">
-            <h2 className="font-sans text-5xl sm:text-7xl font-normal text-[#123C2C] leading-[1.05]">
+            <h2 className="font-sans text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-[#123C2C] leading-[1.08] tracking-tight">
               Let's witness <br />
               <span className="font-sans font-extrabold text-[#123C2C]">
                 the <span className="font-black text-[#123C2C]">first Edition</span>
@@ -88,18 +88,18 @@ export default function CountdownSection() {
 
           {/* Right 4 Stacked Color Bars with Automatically Displayed Topics */}
           <div className="lg:col-span-6 flex justify-start lg:justify-end">
-            <div className="w-full max-w-[380px] sm:max-w-[440px] space-y-2.5">
+            <div className="w-full max-w-[380px] sm:max-w-[440px] space-y-2 sm:space-y-2.5">
               {currentTopics.map((item, idx) => {
                 const style = barStyles[idx];
                 return (
                   <div
                     key={idx}
-                    className={`h-7 sm:h-8 ${style.bg} ${style.text} rounded-md px-3 sm:px-4 flex items-center justify-between shadow-2xs transition-all duration-700 ease-in-out hover:scale-[1.01]`}
+                    className={`h-7 sm:h-8 ${style.bg} ${style.text} rounded-md px-2.5 sm:px-4 flex items-center justify-between shadow-2xs transition-all duration-700 ease-in-out hover:scale-[1.01]`}
                   >
-                    <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider truncate">
+                    <span className="text-[10px] xs:text-[11px] sm:text-xs font-black uppercase tracking-wider truncate mr-1.5">
                       {item.title}
                     </span>
-                    <span className="text-[10px] sm:text-[11px] font-mono font-bold opacity-80 shrink-0 ml-2">
+                    <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-mono font-bold opacity-80 shrink-0">
                       {item.num}
                     </span>
                   </div>
@@ -111,32 +111,32 @@ export default function CountdownSection() {
         </div>
 
         {/* Dynamic Countdown Display */}
-        <div className="bg-[#EEF3EA] rounded-3xl p-8 sm:p-10 border border-[#D5E0D2]">
+        <div className="bg-[#EEF3EA] rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 border border-[#D5E0D2]">
 
-          <div className="flex items-center gap-2.5 mb-6 text-[#123C2C] font-bold text-sm">
-            <IslamicCompassIcon className="w-5 h-5 text-[#2B6D45]" />
-            <span>Countdown to Summit Inauguration • 11 September 2026</span>
+          <div className="flex items-center gap-2 mb-5 sm:mb-6 text-[#123C2C] font-bold text-xs sm:text-sm">
+            <IslamicCompassIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#2B6D45] shrink-0" />
+            <span className="truncate">Countdown to Summit Inauguration • 11 Sept 2026</span>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-              <div className="text-4xl sm:text-6xl font-black text-[#123C2C]">{String(timeLeft.days).padStart(2, '0')}</div>
-              <div className="text-xs font-bold uppercase text-gray-500 mt-2">Days</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-center">
+            <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm">
+              <div className="text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C]">{String(timeLeft.days).padStart(2, '0')}</div>
+              <div className="text-[10px] sm:text-xs font-bold uppercase text-gray-500 mt-1.5 sm:mt-2">Days</div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-              <div className="text-4xl sm:text-6xl font-black text-[#123C2C]">{String(timeLeft.hours).padStart(2, '0')}</div>
-              <div className="text-xs font-bold uppercase text-gray-500 mt-2">Hours</div>
+            <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm">
+              <div className="text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C]">{String(timeLeft.hours).padStart(2, '0')}</div>
+              <div className="text-[10px] sm:text-xs font-bold uppercase text-gray-500 mt-1.5 sm:mt-2">Hours</div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-              <div className="text-4xl sm:text-6xl font-black text-[#123C2C]">{String(timeLeft.minutes).padStart(2, '0')}</div>
-              <div className="text-xs font-bold uppercase text-gray-500 mt-2">Minutes</div>
+            <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm">
+              <div className="text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C]">{String(timeLeft.minutes).padStart(2, '0')}</div>
+              <div className="text-[10px] sm:text-xs font-bold uppercase text-gray-500 mt-1.5 sm:mt-2">Minutes</div>
             </div>
 
-            <div className="bg-[#123C2C] text-white p-6 rounded-2xl shadow-md">
-              <div className="text-4xl sm:text-6xl font-black text-white">{String(timeLeft.seconds).padStart(2, '0')}</div>
-              <div className="text-xs font-bold uppercase text-gray-300 mt-2">Seconds</div>
+            <div className="bg-[#123C2C] text-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-md">
+              <div className="text-3xl sm:text-5xl md:text-6xl font-black text-white">{String(timeLeft.seconds).padStart(2, '0')}</div>
+              <div className="text-[10px] sm:text-xs font-bold uppercase text-gray-300 mt-1.5 sm:mt-2">Seconds</div>
             </div>
           </div>
 
