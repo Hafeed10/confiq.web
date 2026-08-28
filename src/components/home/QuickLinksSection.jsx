@@ -77,32 +77,32 @@ export default function QuickLinksSection({ onOpenBrochure, scrollToSection }) {
           })}
         </div>
 
-        {/* 3 Dark Green Action Buttons Row matching User Diagram */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
-          {/* Button 1: Explore Sessions */}
+        {/* 3 Dark Green Action Buttons Layout matching User Diagram: 2 on top, 1 full-width on bottom for mobile */}
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center gap-2.5 xs:gap-3 sm:gap-4 md:gap-5 max-w-lg sm:max-w-none mx-auto">
+          {/* Button 1: Explore Sessions (Top Left on mobile) */}
           <button
             onClick={() => scrollToSection && scrollToSection('sessions')}
-            className="bg-[#17472B] hover:bg-[#20603B] text-white px-5 sm:px-7 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2.5 cursor-pointer select-none group"
+            className="col-span-1 bg-[#17472B] hover:bg-[#20603B] text-white px-3 xs:px-4 sm:px-6 md:px-7 py-3 sm:py-3.5 rounded-2xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer select-none group"
           >
-            <IslamicCompassIcon className="w-4 h-4 text-[#D8ECC0] group-hover:rotate-45 transition-transform" />
-            <span>Explore Sessions</span>
+            <IslamicCompassIcon className="w-4 h-4 text-[#D8ECC0] group-hover:rotate-45 transition-transform shrink-0" />
+            <span className="truncate">Explore Sessions</span>
           </button>
 
-          {/* Button 2: Download Brochure */}
+          {/* Button 2: Download Brochure (Top Right on mobile) */}
           <button
             onClick={onOpenBrochure}
-            className="bg-[#17472B] hover:bg-[#20603B] text-white px-5 sm:px-7 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2.5 cursor-pointer select-none"
+            className="col-span-1 bg-[#17472B] hover:bg-[#20603B] text-white px-3 xs:px-4 sm:px-6 md:px-7 py-3 sm:py-3.5 rounded-2xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer select-none"
           >
-            <IslamicScrollIcon className="w-4 h-4 text-[#D8ECC0]" />
-            <span>Download Brochure</span>
+            <IslamicScrollIcon className="w-4 h-4 text-[#D8ECC0] shrink-0" />
+            <span className="truncate">Download Brochure</span>
           </button>
 
-          {/* Button 3: Register Now */}
+          {/* Button 3: Register Now (Full Width centered on mobile bottom) */}
           <button
             onClick={onOpenBrochure}
-            className="bg-[#17472B] hover:bg-[#20603B] text-white px-5 sm:px-7 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2.5 cursor-pointer select-none"
+            className="col-span-2 w-full sm:w-auto bg-[#17472B] hover:bg-[#20603B] text-white px-5 sm:px-8 md:px-9 py-3 sm:py-3.5 rounded-2xl font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5 cursor-pointer select-none"
           >
-            <IslamicArchIcon className="w-4 h-4 text-[#D8ECC0]" />
+            <IslamicArchIcon className="w-4 h-4 text-[#D8ECC0] shrink-0" />
             <span>Register Now</span>
           </button>
         </div>
