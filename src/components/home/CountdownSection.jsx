@@ -1,36 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { IslamicCompassIcon } from '../common/IslamicIcons';
 
 export default function CountdownSection() {
-  const targetDate = new Date('2026-09-11T09:00:00+05:30').getTime();
-
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
-
-  useEffect(() => {
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000)
-        });
-      }
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, [targetDate]);
-
   // Automated topic rotation across the 4 color bars
   const [topicIndex, setTopicIndex] = useState(0);
   const topicSets = [
@@ -46,7 +16,7 @@ export default function CountdownSection() {
       { num: '03', title: 'Germline Editing & Maqasid al-Shariah' },
       { num: '04', title: 'Indian Ocean Shafi‘i Trade Codes' }
     ],
-    
+
   ];
 
   useEffect(() => {
@@ -100,38 +70,6 @@ export default function CountdownSection() {
                   </div>
                 );
               })}
-            </div>
-          </div>
-
-        </div>
-
-        {/* Dynamic Countdown Display */}
-        <div className="bg-[#EEF3EA] rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 border border-[#D5E0D2]">
-
-          <div className="flex items-center gap-2 mb-5 sm:mb-6 text-[#123C2C] font-bold text-xs sm:text-sm">
-            <IslamicCompassIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#2B6D45] shrink-0" />
-            <span className="truncate">Countdown to Summit Inauguration • 11 Sept 2026</span>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-center">
-            <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm">
-              <div className="text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C]">{String(timeLeft.days).padStart(2, '0')}</div>
-              <div className="text-[10px] sm:text-xs font-bold uppercase text-gray-500 mt-1.5 sm:mt-2">Days</div>
-            </div>
-
-            <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm">
-              <div className="text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C]">{String(timeLeft.hours).padStart(2, '0')}</div>
-              <div className="text-[10px] sm:text-xs font-bold uppercase text-gray-500 mt-1.5 sm:mt-2">Hours</div>
-            </div>
-
-            <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm">
-              <div className="text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C]">{String(timeLeft.minutes).padStart(2, '0')}</div>
-              <div className="text-[10px] sm:text-xs font-bold uppercase text-gray-500 mt-1.5 sm:mt-2">Minutes</div>
-            </div>
-
-            <div className="bg-[#123C2C] text-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-md">
-              <div className="text-3xl sm:text-5xl md:text-6xl font-black text-white">{String(timeLeft.seconds).padStart(2, '0')}</div>
-              <div className="text-[10px] sm:text-xs font-bold uppercase text-gray-300 mt-1.5 sm:mt-2">Seconds</div>
             </div>
           </div>
 

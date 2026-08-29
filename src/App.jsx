@@ -209,24 +209,24 @@ export default function App() {
   // 3. Render Landing Page
   return (
     <div className="min-h-screen bg-brand-bg text-brand-textDark font-sans selection:bg-brand-dark selection:text-white flex flex-col">
-      
+
       {/* Navigation Header */}
-      <Navbar 
+      <Navbar
         onOpenBrochure={() => setIsBrochureOpen(true)}
         scrollToSection={scrollToSection}
       />
 
       {/* Main Content Sections */}
       <main className="flex-grow">
-        
+
         {/* 1. Hero Section matching mockup */}
-        <Hero 
+        <Hero
           onOpenBrochure={() => setIsBrochureOpen(true)}
           scrollToSection={scrollToSection}
         />
 
         {/* 2. Quick Links Section (4 Squircles + 3 Action Buttons) */}
-        <QuickLinksSection 
+        <QuickLinksSection
           onOpenBrochure={() => setIsBrochureOpen(true)}
           scrollToSection={scrollToSection}
         />
@@ -235,12 +235,12 @@ export default function App() {
         <AcademicIntro />
 
         {/* 3. Academic Tracks Grid */}
-        <AcademicTracks 
+        <AcademicTracks
           tracksData={tracksData}
         />
 
         {/* 4. Scheduled Sessions Carousel */}
-        <ScheduledSessions 
+        <ScheduledSessions
           sessionsData={sessionsData}
           onExploreAllSessions={handleExploreAllSessions}
         />
@@ -254,13 +254,13 @@ export default function App() {
       </main>
 
       {/* Footer & Secretariat Desk */}
-      <Footer 
+      <Footer
         onOpenBrochure={() => setIsBrochureOpen(true)}
         scrollToSection={scrollToSection}
       />
 
       {/* Official Brochure Viewer Modal */}
-      <BrochureModal 
+      <BrochureModal
         isOpen={isBrochureOpen}
         onClose={() => setIsBrochureOpen(false)}
       />

@@ -1,80 +1,96 @@
-import React from 'react';
-import { 
-  IslamicChipIcon, 
-  IslamicStarIcon, 
-  IslamicBioNodeIcon, 
-  IslamicBookIcon, 
-  IslamicCompassIcon, 
+import React, { useState, useEffect } from 'react';
+import {
+  IslamicCompassIcon,
   IslamicScrollIcon,
   IslamicArchIcon
 } from '../common/IslamicIcons';
 
 export default function QuickLinksSection({ onOpenBrochure, scrollToSection }) {
-  const cards = [
-    {
-      title: 'Crypto Fiqh',
-      tag: 'Track 01',
-      desc: 'DeFi & Smart Contracts',
-      icon: IslamicChipIcon,
-      section: 'tracks'
-    },
-    {
-      title: 'AI Fatwa Limits',
-      tag: 'Track 02',
-      desc: 'Autonomous Jurisprudence',
-      icon: IslamicStarIcon,
-      section: 'tracks'
-    },
-    {
-      title: 'CRISPR Bioethics',
-      tag: 'Track 03',
-      desc: 'Genomic Engineering',
-      icon: IslamicBioNodeIcon,
-      section: 'tracks'
-    },
-    {
-      title: 'Makhdoomi Heritage',
-      tag: 'Heritage',
-      desc: 'Shafi‘ite Kerala Tradition',
-      icon: IslamicBookIcon,
-      section: 'about'
-    }
-  ];
+  const targetDate = new Date('2026-09-11T09:00:00+05:30').getTime();
+
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000)
+        });
+      }
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [targetDate]);
 
   return (
-    <section className="bg-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-[#D8E6C8]">
+    <section className="bg-white py-10 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-[#D8E6C8]">
       <div className="max-w-6xl mx-auto">
 
-        {/* 4 Rounded Squircle Cards Grid matching User Diagram */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-10 sm:mb-12">
-          {cards.map((card, idx) => {
-            const Icon = card.icon;
-            return (
-              <div
-                key={idx}
-                onClick={() => scrollToSection && scrollToSection(card.section)}
-                className="aspect-square sm:aspect-[4/3] bg-[#D4E8B8] hover:bg-[#C7E1A6] rounded-3xl border-2 border-[#17472B]/60 p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer group select-none"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/70 text-[#17472B] flex items-center justify-center shadow-2xs group-hover:bg-[#17472B] group-hover:text-white transition-colors">
-                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-mono font-bold text-[#17472B]/70 bg-white/50 px-2 py-0.5 rounded-md">
-                    {card.tag}
-                  </span>
-                </div>
+        {/* Countdown to Summit Inauguration Container matching User Screenshot */}
+        <div className="bg-[#EEF3EA] rounded-2xl sm:rounded-3xl p-4 xs:p-5 sm:p-7 md:p-8 border border-[#D5E0D2] mb-8 sm:mb-12 shadow-xs">
 
-                <div>
-                  <h4 className="text-xs sm:text-sm md:text-base font-extrabold text-[#17472B] mb-0.5 group-hover:text-[#0e301c] transition-colors">
-                    {card.title}
-                  </h4>
-                  <p className="text-[10px] sm:text-xs font-medium text-[#38592A] line-clamp-1">
-                    {card.desc}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+          {/* Header row with Compass icon */}
+          <div className="flex items-center gap-2 mb-4 sm:mb-6 text-[#123C2C] font-bold text-xs sm:text-sm">
+            <IslamicCompassIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#2B6D45] shrink-0" />
+            <span className="truncate">Countdown to Summit Inauguration • 11 Sept 2026</span>
+          </div>
+
+          {/* 4 Countdown Timer Cards Grid (3 White + 1 Dark Green SECONDS) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 select-none">
+            {/* 1. DAYS */}
+            <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm hover:shadow-md py-5 sm:py-7 px-3 sm:px-4 flex flex-col items-center justify-center text-center transition-all">
+              <span className="font-sans text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C] tracking-tight">
+                {String(timeLeft.days).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-500 mt-1.5 sm:mt-2">
+                DAYS
+              </span>
+            </div>
+
+            {/* 2. HOURS */}
+            <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm hover:shadow-md py-5 sm:py-7 px-3 sm:px-4 flex flex-col items-center justify-center text-center transition-all">
+              <span className="font-sans text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C] tracking-tight">
+                {String(timeLeft.hours).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-500 mt-1.5 sm:mt-2">
+                HOURS
+              </span>
+            </div>
+
+            {/* 3. MINUTES */}
+            <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm hover:shadow-md py-5 sm:py-7 px-3 sm:px-4 flex flex-col items-center justify-center text-center transition-all">
+              <span className="font-sans text-3xl sm:text-5xl md:text-6xl font-black text-[#123C2C] tracking-tight">
+                {String(timeLeft.minutes).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-500 mt-1.5 sm:mt-2">
+                MINUTES
+              </span>
+            </div>
+
+            {/* 4. SECONDS (Highlighted Solid Dark Green Card) */}
+            <div className="bg-[#123C2C] text-white rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg py-5 sm:py-7 px-3 sm:px-4 flex flex-col items-center justify-center text-center transition-all">
+              <span className="font-sans text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight">
+                {String(timeLeft.seconds).padStart(2, '0')}
+              </span>
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#D8ECC0] mt-1.5 sm:mt-2">
+                SECONDS
+              </span>
+            </div>
+          </div>
+
         </div>
 
         {/* 3 Dark Green Action Buttons Layout matching User Diagram: 2 on top, 1 full-width on bottom for mobile */}
