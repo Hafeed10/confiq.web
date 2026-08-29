@@ -76,15 +76,15 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
 
               {/* Foreground Main White Card */}
               {currentSession && (
-                <div className="relative bg-white rounded-[32px] sm:rounded-[36px] shadow-2xl border border-gray-100/80 overflow-hidden z-10">
+                <div className="relative bg-white rounded-[28px] sm:rounded-[36px] shadow-xl sm:shadow-2xl border border-gray-100/80 overflow-hidden z-10">
                   <div className="grid grid-cols-1 md:grid-cols-12 items-center">
                     
                     {/* Left Column: Speaker Portrait with Ambient Aura Background */}
-                    <div className="md:col-span-5 h-72 sm:h-80 md:h-[360px] bg-gradient-to-tr from-amber-50/80 via-purple-50/70 to-pink-50/80 flex items-end justify-center relative overflow-hidden">
+                    <div className="md:col-span-5 h-64 xs:h-72 sm:h-80 md:h-[360px] bg-gradient-to-tr from-amber-50/80 via-purple-50/70 to-pink-50/80 flex items-center md:items-end justify-center relative overflow-hidden">
                       <img
                         src={currentSession.photo}
                         alt={currentSession.speakerName}
-                        className="w-full h-full object-cover object-top md:object-cover scale-100 hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-contain md:object-cover object-center md:object-top scale-100 hover:scale-105 transition-transform duration-500"
                         onError={(e) => {
                           e.target.src = '/zack_wilson.jpg';
                         }}
@@ -92,36 +92,36 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
                     </div>
 
                     {/* Right Column: Speaker Details & Actions */}
-                    <div className="md:col-span-7 p-6 sm:p-10 space-y-4 sm:space-y-5">
+                    <div className="md:col-span-7 p-5 sm:p-8 md:p-10 space-y-3.5 sm:space-y-5">
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="font-sans text-2xl sm:text-3xl font-black text-[#123C2C]">
+                          <h3 className="font-sans text-xl sm:text-2xl md:text-3xl font-black text-[#123C2C] truncate">
                             {currentSession.speakerName}
                           </h3>
-                          <span className="text-xl sm:text-2xl shrink-0">{currentSession.flag}</span>
+                          <span className="text-lg sm:text-2xl shrink-0">{currentSession.flag}</span>
                         </div>
 
-                        <p className="text-xs sm:text-sm font-semibold text-gray-600 mt-1">
+                        <p className="text-xs sm:text-sm font-semibold text-gray-600 mt-1 line-clamp-2">
                           {currentSession.role}
                         </p>
                       </div>
 
                       {/* "Helping with:" Tags Section */}
                       <div>
-                        <span className="text-xs font-semibold text-gray-500 block mb-2">
+                        <span className="text-[11px] sm:text-xs font-semibold text-gray-500 block mb-1.5 sm:mb-2">
                           Helping with:
                         </span>
                         
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
                           {Array.isArray(currentSession.tags) ? currentSession.tags.map((tag, idx) => (
                             <span
                               key={idx}
-                              className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#F0F2F5] text-gray-800 border border-gray-200 shadow-2xs"
+                              className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold bg-[#F0F2F5] text-gray-800 border border-gray-200 shadow-2xs"
                             >
                               {tag}
                             </span>
                           )) : (
-                            <span className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#F0F2F5] text-gray-800 border border-gray-200">
+                            <span className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold bg-[#F0F2F5] text-gray-800 border border-gray-200">
                               {currentSession.tags}
                             </span>
                           )}
@@ -132,17 +132,17 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
                       <div className="w-full h-px bg-gray-200/90 pt-0 my-2" />
 
                       {/* Action Buttons: [ About ] and [ Book lector ] */}
-                      <div className="flex flex-wrap items-center gap-3 pt-1">
+                      <div className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-3 pt-1">
                         <button
                           onClick={() => setBioModalSpeaker(currentSession)}
-                          className="px-8 py-2.5 rounded-2xl border-2 border-gray-900 text-gray-900 font-extrabold text-xs sm:text-sm bg-white hover:bg-gray-50 transition-all cursor-pointer shadow-xs"
+                          className="w-full sm:w-auto px-5 sm:px-8 py-2.5 rounded-2xl border-2 border-gray-900 text-gray-900 font-extrabold text-xs sm:text-sm bg-white hover:bg-gray-50 transition-all cursor-pointer shadow-xs text-center"
                         >
                           About
                         </button>
 
                         <button
                           onClick={() => setBioModalSpeaker(currentSession)}
-                          className="px-8 py-2.5 rounded-2xl bg-[#5B50EE] hover:bg-[#4E43E0] text-white font-extrabold text-xs sm:text-sm transition-all cursor-pointer shadow-md hover:shadow-lg"
+                          className="w-full sm:w-auto px-5 sm:px-8 py-2.5 rounded-2xl bg-[#5B50EE] hover:bg-[#4E43E0] text-white font-extrabold text-xs sm:text-sm transition-all cursor-pointer shadow-md hover:shadow-lg text-center"
                         >
                           Book lector
                         </button>
@@ -178,18 +178,18 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
 
       {/* Speaker Bio Modal */}
       {bioModalSpeaker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative border border-gray-200 max-h-[90vh] overflow-y-auto no-scrollbar">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-3.5 sm:p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative border border-gray-200 max-h-[90vh] overflow-y-auto no-scrollbar">
             <button
               onClick={() => setBioModalSpeaker(null)}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-base flex items-center justify-center transition-colors cursor-pointer"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-base flex items-center justify-center transition-colors cursor-pointer z-20 shadow-2xs shrink-0"
               aria-label="Close"
             >
               <X className="w-4 h-4" />
             </button>
 
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-20 h-20 rounded-2xl overflow-hidden bg-[#EEF3EA] shadow border-2 border-[#17472B] shrink-0">
+            <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 mb-5 sm:mb-6 pr-9 sm:pr-12">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-[#EEF3EA] shadow border-2 border-[#17472B] shrink-0">
                 <img
                   src={bioModalSpeaker.photo}
                   alt={bioModalSpeaker.speakerName}
@@ -199,18 +199,18 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
                   }}
                 />
               </div>
-              <div>
+              <div className="min-w-0 flex-1 break-words">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-sans text-xl sm:text-2xl font-black text-[#123C2C]">
+                  <h3 className="font-sans text-lg sm:text-2xl font-black text-[#123C2C] truncate">
                     {bioModalSpeaker.speakerName}
                   </h3>
-                  <span className="text-xl">{bioModalSpeaker.flag}</span>
+                  <span className="text-lg sm:text-xl shrink-0">{bioModalSpeaker.flag}</span>
                 </div>
-                <p className="text-xs sm:text-sm font-bold text-gray-600 mt-0.5">
+                <p className="text-xs sm:text-sm font-bold text-gray-600 mt-0.5 break-words">
                   {bioModalSpeaker.role}
                 </p>
                 {bioModalSpeaker.affiliation && (
-                  <p className="text-xs font-semibold text-emerald-800 mt-0.5">
+                  <p className="text-xs font-semibold text-emerald-800 mt-0.5 break-words">
                     {bioModalSpeaker.affiliation}
                   </p>
                 )}
@@ -218,22 +218,22 @@ export default function ScheduledSessions({ sessionsData, onExploreAllSessions }
             </div>
 
             {bioModalSpeaker.bio && (
-              <div className="mb-6">
-                <h4 className="text-xs font-black uppercase tracking-wider text-gray-500 mb-2">
+              <div className="mb-5 sm:mb-6">
+                <h4 className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-gray-500 mb-1.5 sm:mb-2">
                   Speaker Biography
                 </h4>
-                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
+                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium break-words">
                   {bioModalSpeaker.bio}
                 </p>
               </div>
             )}
 
             {bioModalSpeaker.abstract && (
-              <div className="bg-[#F4F8F1] p-4 rounded-2xl border border-emerald-200 mb-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#123C2C] block mb-1.5">
+              <div className="bg-[#F4F8F1] p-3.5 sm:p-4 rounded-2xl border border-emerald-200 mb-5 sm:mb-6">
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#123C2C] block mb-1">
                   Session Topic Abstract:
                 </span>
-                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
+                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium break-words">
                   {bioModalSpeaker.abstract}
                 </p>
               </div>

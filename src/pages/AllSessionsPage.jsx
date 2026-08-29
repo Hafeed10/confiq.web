@@ -184,9 +184,9 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
                       
                       {/* LEFT COLUMN: Large Circular Speaker Avatar & Metadata matching diagram */}
-                      <div className="lg:col-span-4 flex flex-col items-center text-center">
+                      <div className="lg:col-span-4 flex flex-col items-center text-center w-full min-w-0">
                         {/* Circular Speaker Avatar */}
-                        <div className="w-32 h-32 sm:w-44 sm:h-44 rounded-full overflow-hidden border-4 border-[#17472B] bg-[#EEF3EA] shadow-md relative shrink-0">
+                        <div className="w-28 h-28 xs:w-32 xs:h-32 sm:w-44 sm:h-44 rounded-full overflow-hidden border-4 border-[#17472B] bg-[#EEF3EA] shadow-md relative shrink-0">
                           <img
                             src={session.photo}
                             alt={session.speakerName}
@@ -198,20 +198,20 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                         </div>
 
                         {/* Speaker Name with Flag */}
-                        <div className="mt-4 flex items-center justify-center gap-2">
-                          <h3 className="font-sans text-xl sm:text-2xl font-black text-[#123C2C]">
+                        <div className="mt-3.5 sm:mt-4 flex items-center justify-center gap-2 max-w-full px-2">
+                          <h3 className="font-sans text-lg xs:text-xl sm:text-2xl font-black text-[#123C2C] truncate">
                             {session.speakerName}
                           </h3>
-                          <span className="text-xl shrink-0">{session.flag}</span>
+                          <span className="text-lg sm:text-xl shrink-0">{session.flag}</span>
                         </div>
 
-                        {/* Role & Affiliation */}
-                        <p className="text-xs sm:text-sm font-bold text-gray-700 mt-1 max-w-xs">
+                        {/* Role & Affiliation with Word Wrap */}
+                        <p className="text-xs sm:text-sm font-bold text-gray-700 mt-1 max-w-full px-2 break-words text-center">
                           {session.role}
                         </p>
                         
                         {session.affiliation && (
-                          <p className="text-[11px] sm:text-xs font-semibold text-emerald-800 mt-0.5 max-w-xs">
+                          <p className="text-[11px] sm:text-xs font-semibold text-emerald-800 mt-0.5 max-w-full px-2 break-words text-center">
                             {session.affiliation}
                           </p>
                         )}
@@ -221,14 +221,14 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                       </div>
 
                       {/* RIGHT COLUMN: Tags, 2 Accordion Bars with Down Arrows, & Action Button */}
-                      <div className="lg:col-span-8 space-y-4">
+                      <div className="lg:col-span-8 space-y-3.5 sm:space-y-4 w-full min-w-0">
                         
                         {/* 1. Top Tags Pills Row matching sketch */}
-                        <div className="flex flex-wrap items-center gap-2">
+                        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2">
                           {tags.map((t, idx) => (
                             <span
                               key={idx}
-                              className="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-[#EBF5DA] text-[#17472B] border border-[#C5DF9F] shadow-xs"
+                              className="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-extrabold bg-[#EBF5DA] text-[#17472B] border border-[#C5DF9F] shadow-xs"
                             >
                               #{String(t).trim().replace(/^#/, '')}
                             </span>
@@ -239,16 +239,15 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                         <div className="rounded-2xl border-2 border-gray-200 overflow-hidden bg-[#FBFDF9] transition-all hover:border-[#17472B]/40">
                           <button
                             onClick={() => toggleAbstract(session.id)}
-                            className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-emerald-50/50 transition-colors cursor-pointer"
+                            className="w-full px-4 sm:px-5 py-3 sm:py-3.5 flex items-center justify-between text-left hover:bg-emerald-50/50 transition-colors cursor-pointer gap-2"
                           >
-                            <div className="flex items-center gap-3">
-                              <BookOpen className="w-4 h-4 text-[#17472B]" />
-                              <span className="font-black text-xs sm:text-sm text-[#123C2C] uppercase tracking-wide">
+                            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                              <BookOpen className="w-4 h-4 text-[#17472B] shrink-0" />
+                              <span className="font-black text-xs sm:text-sm text-[#123C2C] uppercase tracking-wide truncate">
                                 Session Abstract
                               </span>
                             </div>
-                            <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#17472B] bg-[#EBF5DA] px-3 py-1.5 rounded-lg border border-[#C5DF9F]">
-                              <span>{isAbstractOpen ? 'Hide' : 'Read'}</span>
+                            <div className="flex items-center justify-center text-[#17472B] bg-[#EBF5DA] w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-[#C5DF9F] shrink-0">
                               {isAbstractOpen ? (
                                 <ChevronUp className="w-4 h-4" />
                               ) : (
@@ -258,8 +257,8 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                           </button>
 
                           {isAbstractOpen && (
-                            <div className="px-5 pb-5 pt-2 border-t border-gray-100 text-xs sm:text-sm text-gray-700 leading-relaxed bg-white animate-fadeIn">
-                              <p className="font-medium">{session.abstract || 'Detailed abstract not provided.'}</p>
+                            <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-2 border-t border-gray-100 text-xs sm:text-sm text-gray-700 leading-relaxed bg-white animate-fadeIn break-words">
+                              <p className="font-medium break-words">{session.abstract || 'Detailed abstract not provided.'}</p>
                             </div>
                           )}
                         </div>
@@ -268,16 +267,15 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                         <div className="rounded-2xl border-2 border-gray-200 overflow-hidden bg-[#FBFDF9] transition-all hover:border-[#17472B]/40">
                           <button
                             onClick={() => toggleBio(session.id)}
-                            className="w-full px-5 py-3.5 flex items-center justify-between text-left hover:bg-emerald-50/50 transition-colors cursor-pointer"
+                            className="w-full px-4 sm:px-5 py-3 sm:py-3.5 flex items-center justify-between text-left hover:bg-emerald-50/50 transition-colors cursor-pointer gap-2"
                           >
-                            <div className="flex items-center gap-3">
-                              <Award className="w-4 h-4 text-[#17472B]" />
-                              <span className="font-black text-xs sm:text-sm text-[#123C2C] uppercase tracking-wide">
+                            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                              <Award className="w-4 h-4 text-[#17472B] shrink-0" />
+                              <span className="font-black text-xs sm:text-sm text-[#123C2C] uppercase tracking-wide truncate">
                                 Speaker Biography
                               </span>
                             </div>
-                            <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#17472B] bg-[#EBF5DA] px-3 py-1.5 rounded-lg border border-[#C5DF9F]">
-                              <span>{isBioOpen ? 'Hide' : 'Read'}</span>
+                            <div className="flex items-center justify-center text-[#17472B] bg-[#EBF5DA] w-7 h-7 sm:w-8 sm:h-8 rounded-lg border border-[#C5DF9F] shrink-0">
                               {isBioOpen ? (
                                 <ChevronUp className="w-4 h-4" />
                               ) : (
@@ -287,19 +285,19 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                           </button>
 
                           {isBioOpen && (
-                            <div className="px-5 pb-5 pt-2 border-t border-gray-100 text-xs sm:text-sm text-gray-700 leading-relaxed bg-white animate-fadeIn">
-                              <p className="font-medium">{session.bio || `${session.speakerName} is an esteemed keynote contributor to conFiqh 2026.`}</p>
+                            <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-2 border-t border-gray-100 text-xs sm:text-sm text-gray-700 leading-relaxed bg-white animate-fadeIn break-words">
+                              <p className="font-medium break-words">{session.bio || `${session.speakerName} is an esteemed keynote contributor to conFiqh 2026.`}</p>
                             </div>
                           )}
                         </div>
 
                         {/* 4. Bottom Right Action Button from sketch */}
-                        <div className="flex justify-end pt-2">
+                        <div className="flex justify-center sm:justify-end pt-1 sm:pt-2">
                           <button
                             onClick={() => setSelectedBioSpeaker(session)}
-                            className="bg-[#17472B] hover:bg-[#20603B] text-white px-6 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                            className="w-full sm:w-auto bg-[#17472B] hover:bg-[#20603B] text-white px-5 sm:px-6 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer text-center"
                           >
-                            <BookOpen className="w-4 h-4 text-emerald-300" />
+                            <BookOpen className="w-4 h-4 text-emerald-300 shrink-0" />
                             <span>View Full Bio & Abstract</span>
                           </button>
                         </div>
@@ -317,18 +315,18 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
 
       {/* Speaker Full Profile Modal */}
       {selectedBioSpeaker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative border border-gray-200 max-h-[90vh] overflow-y-auto no-scrollbar">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-3.5 sm:p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-5 sm:p-8 shadow-2xl relative border border-gray-200 max-h-[90vh] overflow-y-auto no-scrollbar">
             <button
               onClick={() => setSelectedBioSpeaker(null)}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-base flex items-center justify-center transition-colors cursor-pointer"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-base flex items-center justify-center transition-colors cursor-pointer z-20 shadow-2xs shrink-0"
               aria-label="Close"
             >
               <X className="w-4 h-4" />
             </button>
 
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-20 h-20 rounded-full overflow-hidden bg-[#EEF3EA] shadow border-2 border-[#17472B] shrink-0">
+            <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 mb-5 sm:mb-6 pr-9 sm:pr-12">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-[#EEF3EA] shadow border-2 border-[#17472B] shrink-0">
                 <img
                   src={selectedBioSpeaker.photo}
                   alt={selectedBioSpeaker.speakerName}
@@ -338,18 +336,18 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
                   }}
                 />
               </div>
-              <div>
+              <div className="min-w-0 flex-1 break-words">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-sans text-xl sm:text-2xl font-black text-[#123C2C]">
+                  <h3 className="font-sans text-lg sm:text-2xl font-black text-[#123C2C] truncate">
                     {selectedBioSpeaker.speakerName}
                   </h3>
-                  <span className="text-xl">{selectedBioSpeaker.flag}</span>
+                  <span className="text-lg sm:text-xl shrink-0">{selectedBioSpeaker.flag}</span>
                 </div>
-                <p className="text-xs sm:text-sm font-bold text-gray-600 mt-0.5">
+                <p className="text-xs sm:text-sm font-bold text-gray-600 mt-0.5 break-words">
                   {selectedBioSpeaker.role}
                 </p>
                 {selectedBioSpeaker.affiliation && (
-                  <p className="text-xs font-semibold text-emerald-800 mt-0.5">
+                  <p className="text-xs font-semibold text-emerald-800 mt-0.5 break-words">
                     {selectedBioSpeaker.affiliation}
                   </p>
                 )}
@@ -357,22 +355,22 @@ export default function AllSessionsPage({ onBackToHome, onOpenBrochure, sessions
             </div>
 
             {selectedBioSpeaker.bio && (
-              <div className="mb-6">
-                <h4 className="text-xs font-black uppercase tracking-wider text-gray-500 mb-2">
+              <div className="mb-5 sm:mb-6">
+                <h4 className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-gray-500 mb-1.5 sm:mb-2">
                   Speaker Biography
                 </h4>
-                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium">
+                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-medium break-words">
                   {selectedBioSpeaker.bio}
                 </p>
               </div>
             )}
 
             {selectedBioSpeaker.abstract && (
-              <div className="bg-[#F4F8F1] p-4 rounded-2xl border border-emerald-200 mb-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#123C2C] block mb-1.5">
+              <div className="bg-[#F4F8F1] p-3.5 sm:p-4 rounded-2xl border border-emerald-200 mb-5 sm:mb-6">
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#123C2C] block mb-1">
                   Session Topic Abstract:
                 </span>
-                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
+                <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium break-words">
                   {selectedBioSpeaker.abstract}
                 </p>
               </div>

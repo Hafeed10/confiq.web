@@ -46,12 +46,7 @@ export default function CountdownSection() {
       { num: '03', title: 'Germline Editing & Maqasid al-Shariah' },
       { num: '04', title: 'Indian Ocean Shafi‘i Trade Codes' }
     ],
-    [
-      { num: '01', title: 'Decentralized Staking & Riba Boundaries' },
-      { num: '02', title: 'Algorithmic Judicial Decision Systems' },
-      { num: '03', title: 'Epigenetic Therapeutics & Islamic Ethics' },
-      { num: '04', title: 'Ponnani Legal Tradition in 21st Century' }
-    ]
+    
   ];
 
   useEffect(() => {
